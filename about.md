@@ -4,13 +4,14 @@ title: About
 permalink: /about/
 ---
 
-
 Hi, my name is Vasiliy Kevroletin and I am software developer from
-[Vladivostok](https://en.wikipedia.org/wiki/Vladivostok).
+[Vladivostok](https://en.wikipedia.org/wiki/Vladivostok)
 
-My working experience is documented in the [CV](https://drive.google.com/file/d/1mYpssQXmZXHBpub5bl1paPN1dPfiYkFY/view?usp=sharing).
+My working experience is documented in the
+[CV](https://drive.google.com/file/d/1mYpssQXmZXHBpub5bl1paPN1dPfiYkFY/view?usp=sharing).
 
 Throughout my career I have been working on
+
 * stabilizing and optimizing c++ code for an embedded system
 * implementing libraries and services in c++ and java
 * managing self sufficient small team which was in charge of development,
@@ -20,9 +21,9 @@ Aside from code development I also worked on documentation: I documented my code
 and gathered requirements for a new library. I also developed tests by my own
 initiative to improve one very unstable system.
 
-I am passioned about technologies especially about software development. I
-often spend my free time learning about interesting stuff like
-functional programming, programming languages or libraries.
+I am passioned about technologies especially about software development. I often
+spend my free time learning about interesting stuff like functional programming,
+programming languages or libraries.
 
 Feel free to contact me. In addition to email you also can easily reach me in
 telegram, my nick is [kevroletin](https://web.telegram.org/#/im?p=@kevroletin).
