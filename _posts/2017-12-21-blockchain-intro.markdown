@@ -258,15 +258,14 @@ Bitcoin is a cryptocurrency. It is very similar to banking application.
 There are accounts and balances and transactions which move money
 between accounts.
 
-Bitcoin uses public/private key cryptography to implement accounts. You
-as user generate public/private keys pair. Your public key is your
-account. A private key is a permission to use this account. You use the
-private key to sign transactions to take money from the corresponding
-account. Due to cryptographic asymmetry only one who knows private key
-can move money from the account but everyone can validate that
-transaction is rightful. This approach with asymmetric cryptography is
-widely used and I am not aware of any other scheme to implement accounts
-ownership in a system where all data is visible to everyone.
+Bitcoin uses public/private key cryptography to implement accounts. You as user
+generate public/private keys pair. Your public key is your account. A private
+key is a permission to use your assets. You use the private key to sign
+transactions to take money from the corresponding account. Due to cryptographic
+asymmetry only one who knows private key can move corresponding money but
+everyone can validate that transaction is rightful. This approach with
+asymmetric cryptography is widely used and I am not aware of any other scheme to
+implement accounts ownership in a system where all data is visible to everyone.
 
 The system should track history of all transactions to know the balance
 of each account. Bitcoin simplifies this task by storing money inside
