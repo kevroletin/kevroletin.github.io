@@ -105,16 +105,17 @@ work correctly if up to 1/3 of nodes fail)*.
 ![]({{ "/assets/2017-12-21-blockchain-intro/distributed-with-resilience.png" | absolute_url }})
 
 Algorithms for Byzantine fault tolerance where invented long before the
-invention of bitcoin. Byzantine fault tolerance is not something
-completely new in computer science and in the industry \[todo: links to
-pbft and tendermit father\].
+invention of bitcoin. Byzantine fault tolerance is not something completely new
+in computer science and in the industry
+([DLS](http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf),
+[PFBT](http://pmg.csail.mit.edu/papers/osdi99.pdf)).
 
 Why "distributed in huge untrusted network" part matters
 --------------------------------------------------------
 
 Here for simplicity, we talk about Bitcoin. It runs on the Internet and
 there are the huge amount of Bitcoin nodes in different parts of the
-World *(tens of thousands \[todo: citation needed\])*. The core feature
+World *([tens of thousands](https://bitnodes.earn.com/))*. The core feature
 of Bitcoin is that absolutely anyone can join its network. And no one
 can guarantee that arbitrary person who joins network will run the
 trusted software. Most people run the client from Bitcoin developers,
@@ -124,13 +125,14 @@ a client can misbehave in some intelligent way. Moreover, malicious
 users can try to deploy a number of malicious nodes and coordinate their
 behavior.
 
-Bitcoin can tolerate coordinated attacks unless a majority of the
-network is healthy\[todo: citations needed\]. There were algorithms
-which can tolerate Byzantine failures in the untrusted network prior to
-Bitcoin invention. But they don't scale to a massive network. So
-Byzantine fault tolerance in Internet scale is true innovation from
-Bitcoin. Nowadays people figured out how to apply those "classic"
-byzantine fail tolerance algorithms to build blockchain, but 10 years
+Bitcoin can tolerate coordinated attacks unless a majority of the network is
+healthy *(see [Ghost protocol
+introduction](https://www.youtube.com/watch?v=iSq-emtyx5g) for simple
+explanation)*. There were algorithms which can tolerate Byzantine failures in
+the untrusted network prior to Bitcoin invention. But they don't scale to a
+massive network. So Byzantine fault tolerance in Internet scale is true
+innovation from Bitcoin. Nowadays people figured out how to apply those
+"classic" byzantine fail tolerance algorithms to build blockchain, but 10 years
 ago Bitcoin was true innovation in this problem.
 
 Model for blockchain
@@ -302,19 +304,19 @@ outputs from it where one of the new outputs is owned by your account)*.
 
     Transactions. Replayed on all nodes.
 
-    When a full node receives a new transaction it checks
-    transaction validity. To do so it checks crypto signatures and
-    ensures that inputs are valid *(that they exist and that they
-    aren't spent)*. There is two flavor of transactions: those who were
-    written into blockchain history *(confirmed)* and those who weren't
-    *(unconfirmed)*. In order to validate confirmed transactions node
-    also runs scripts associated with the transaction. Scripts allow
-    implementing some more complicated applications other than simple
-    tokens movement. Examples are a lottery, an escrow transactions,
-    a voting. As far as I know, it's almost never used in practice
-    \[todo: proof\], but there are initiatives to review Bitcoin script,
-    for example, [Ivy for
-    Bitcoin](https://blog.chain.com/ivy-for-bitcoin-a-smart-contract-language-that-compiles-to-bitcoin-script-bec06377141a).
+    When a full node receives a new transaction it checks transaction validity.
+    To do so it checks crypto signatures and ensures that inputs are valid
+    *(that they exist and that they aren't spent)*. There is two flavor of
+    transactions: those who were written into blockchain history *(confirmed)*
+    and those who weren't *(unconfirmed)*. In order to validate confirmed
+    transactions node also runs scripts associated with the transaction. Scripts
+    allow implementing some more complicated applications other than simple
+    tokens movement. Examples are a lottery, an escrow transactions, a voting.
+    As far as I know, it's almost never used in practice *(according to [this
+    lectures](https://www.coursera.org/learn/cryptocurrency))*. There are
+    initiatives to review Bitcoin script, for example, [Ivy for
+    Bitcoin](https://blog.chain.com/ivy-for-bitcoin-a-smart-contract-language-that-compiles-to-bitcoin-script-bec06377141a),
+    but I don't sure if it will be useful.
 
 3.  Consensus.
 
