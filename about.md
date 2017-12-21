@@ -8,7 +8,7 @@ permalink: /about/
 Hi, my name is Vasiliy Kevroletin and I am software developer from
 [Vladivostok](https://en.wikipedia.org/wiki/Vladivostok).
 
-My working experience is documented in [CV](https://drive.google.com/drive/u/0/folders/0B36IYx_6MNY6TXN4M1A1bEJ3d1E).
+My working experience is documented in the [CV](https://drive.google.com/file/d/1mYpssQXmZXHBpub5bl1paPN1dPfiYkFY/view?usp=sharing).
 
 Throughout my career I have been working on
 * stabilizing and optimizing c++ code for an embedded system
