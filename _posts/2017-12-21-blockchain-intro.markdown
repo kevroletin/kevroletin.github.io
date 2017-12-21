@@ -382,17 +382,16 @@ Ethereum, smart contracts
     Snapshot of the current state. Stored on all nodes *(there are plans
     to optimize that by sharding)*.
 
-    Ethereum organizes history differently compared to Bitcoin. It
-    explicitly stores state in each block. To reduce storage consumption
-    Ethereum represents the state as tree data structure
-    *(actual trie)*. The main idea here is that state transformation
-    usually changes only small part of the state which is a small subset
-    of nodes in the tree. The new state can use almost all nodes from
-    old tree except for root node and several others which locate on the
-    path from the root to changed nodes. This is how many Functional
-    data structures work. For example, if you explore immutable Vector
-    from Scala standard library you will find that it is actually a tree
-    where each node is a small immutable array.
+    Ethereum organizes history differently compared to Bitcoin. It explicitly
+    stores state in each block. To reduce storage consumption Ethereum
+    represents the state as a tree data structure *(actually as a trie)*. The
+    main idea here is that state transformation usually changes only small part
+    of the state which is a small subset of nodes in the tree. The new state can
+    use almost all nodes from old one except for root node and several other
+    nodes which locate on the path from the root to changed nodes. This is
+    approach used in many Functional data structures. For example, if you
+    explore immutable Vector from Scala standard library you will find that it
+    is actually a tree where each node is a small immutable array.
 
     ![]({{ "/assets/2017-12-21-blockchain-intro/ether-state.png" | absolute_url }})
 
