@@ -425,3 +425,5 @@ Ethereum, smart contracts
     Ethereum slightly extends PoW with the Ghost scheme. We will mention this
     extension in scalability section in the following articles. Ghost improves
     security of PoW without directly improving throughput.
+
+{% include disqus.html %}
