@@ -4,15 +4,22 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+Hi, my name is Vasiliy Kevroletin and I am software developer from
+[Vladivostok](https://en.wikipedia.org/wiki/Vladivostok).
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+My working experience is documented in [CV](https://drive.google.com/drive/u/0/folders/0B36IYx_6MNY6TXN4M1A1bEJ3d1E).
 
+Throughout my career I have been working on
+* stabilizing and optimizing c++ code for an embedded system
+* implementing libraries and services in c++ and java
+* managing self sufficient small team which was in charge of development,
+  support and deployment of services for internal use.
 
-[jekyll-organization]: https://github.com/jekyll
+Aside from code development I also worked on documentation: I documented
+produced code and gathered requirements for new library. I also developed tests
+by my own initiative to improve one very unstable system.
+
+I am passioned about technologies especially about software development. I
+often spend my free time learning about interesting stuff like
+functional programming, programming languages or libraries.
