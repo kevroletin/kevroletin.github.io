@@ -75,7 +75,7 @@ outputs from it where one of the new outputs is owned by your account)*.
     tokens movement. Examples are a lottery, an escrow transactions, a voting.
     As far as I know, it's almost never used in practice *(according to [this
     lectures](https://www.coursera.org/learn/cryptocurrency))*. There are
-    initiatives to review Bitcoin script, for example, [Ivy for
+    initiatives to revive Bitcoin script, for example, [Ivy for
     Bitcoin](https://blog.chain.com/ivy-for-bitcoin-a-smart-contract-language-that-compiles-to-bitcoin-script-bec06377141a),
     but I am not sure if it will be useful.
 

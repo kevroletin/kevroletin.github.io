@@ -41,8 +41,8 @@ After glancing at a dozen of whitepapers, and googling I developed
 a small blockchain cheat sheet for myself. I decided to present it in a
 readable form with the hope that it will be useful for others.
 
-Blockchain overview
-===================
+Blockchain definition
+=====================
 
 What is blockchain? Instead of a scientific definition, I use my own intuitive
 version. The blockchain is a distributed application which works in the huge
@@ -61,7 +61,7 @@ stopping working *(probably in some intelligent way)*. Below is more
 friendly decryption of what is a Byzantine failure.
 
 Let's consider few examples of systems distributed across several
-network nodes.
+network nodes _(which are not blockchains)_.
 
 First one is a database with sharding. You install the same instance of
 the database server on several nodes and split dataset between them
@@ -249,6 +249,18 @@ probability of failure. So at some point, we can decide to ignore
 0.0000\...0001% chance of failure. And also we can use the notion of time
 and introduce timeouts which don't change anything from the theoretical
 point of view but work in practice.
+
+To be continued
+===============
+
+* We have defined what blockchain is.
+* We have briefly covered challenges of distributed systems _(consistency vs
+  availability, Byzantine failures, distributed consensus)_.
+* We have produced simple model which will help us to classify and discuss many
+  of existing blockchains _(state, state transformations, consensus)_.
+
+See you in next posts which will describe Bitcoin, Ethereum, different altcoins
+and the blockchain scalability problem.
 
 Thanks
 ======
