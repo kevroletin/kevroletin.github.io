@@ -10,7 +10,7 @@ Structure
 
 For many people, blockchain and Bitcoin are interchangeable synonyms. In this
 series of posts, I argue that world of blockchains is much more complicated than
-that. I plan to describe features of several popular blockchains with emphasis
+that. I plan to describe features of several popular platforms with emphasis
 on performance and scaling solutions. This article is an introduction to the
 subject.
 
