@@ -101,23 +101,14 @@ to compensate bills and to provide revenue. Mining requires separate software
 but the user also runs a full client. The user is an active part of Bitcoin
 community because his/her wealth directly depends on the Bitcoin ecosystem
 health. The user also knows that his/her service is required to "commit"
-transactions of other users into the blockchain. And his/her honesty is required
-to secure the network. 
+transactions of other bitcoiners into the blockchain. And his/her honesty is
+required to secure the network.
 
-User story. 9 year ago he/she read about Bitcoin on a specialized forum for
-crypto-anarchists. Out of curiosity he/she installed bitcoind and started
-mining. It took 100% of the CPU but every now and then it produces Bitcoins. The
-time has passed and probability to mine block on a CPU has dropped. Now the user
-needs separate mining software and a powerful GPU *(graphical card)*. Fast
-forward and he/she needs several GPUs; hundred of GPUs; some company just
-released specialized hardware for mining so a GPU mining probably sucks *(and
-it's only year 2013)*. Today *(2018)* there are companies which build huge
-mining datacenters.
-
-And nowdays solo mining doesn't work. Modern miners form groups to compute
-together and to share a reward. This approach is called mining pools and the
-main idea here is to smooth rewards over time. Instead of a huge reward once per
-century you get a tiny reward daily.
+Nowdays solo mining doesn't work. Modern miners form groups to compute together
+and to share a reward. This approach is called mining pools and the main idea
+here is to smooth rewards over time. Instead of a huge reward once per century
+you get a tiny reward daily. So our miner user is also a part of some mining
+pool.
 
 #### Highlights
 
@@ -210,7 +201,24 @@ application.
 
 ### Puzzle
 
-TODO
+A puzzle makes it difficult to produce some digital content but it allows easy
+verification of the resulting solution. "Difficult" means that time and
+computational power *(i.e. money)* should be spent.
+
+The original purpose of puzzles in computer science was reducing email spam
+*(see [Hashcash](https://en.wikipedia.org/wiki/Hashcash))*. One of the reasons
+why email spam is so widespread is that sending emails is instantaneous and
+almost free. If there would be price to pay for each email then Internet-scale
+spam would be hard *(or even impossible)*. To add this price we can agree *(by
+using standards)* that each valid email contains a valid puzzle solution.
+
+An important note about a puzzle is that is works similar to a hash function. It
+takes a content as input and produces smaller output. Different puzzles exist
+but Bitcoin puzzle is, in fact, a hash function with an additional restriction.
+
+
+
+
 
 ### Mining
 
