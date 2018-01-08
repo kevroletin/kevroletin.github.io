@@ -5,8 +5,7 @@ date:   2017-12-21 00:00:00 +1000
 categories: blockchain
 ---
 
-Structure
-=========
+## Structure
 
 For many people, blockchain and Bitcoin are interchangeable synonyms. In this
 series of posts, I argue that world of blockchains is much more complicated than
@@ -14,8 +13,7 @@ that. I plan to describe features of several popular platforms with emphasis
 on performance and scaling solutions. This article is an introduction to the
 subject.
 
-Motivation
-==========
+## Motivation
 
 My recent involvement in local startup gave me great opportunity to dig into
 blockchain technology. Nowadays blockchain is buzz-word and Internet generate a
@@ -41,8 +39,7 @@ After glancing at a dozen of whitepapers, and googling I developed
 a small blockchain cheat sheet for myself. I decided to present it in a
 readable form with the hope that it will be useful for others.
 
-Blockchain definition
-=====================
+## Blockchain definition
 
 What is blockchain? Instead of a scientific definition, I use my own intuitive
 version. The blockchain is a distributed application which works in the huge
@@ -52,8 +49,7 @@ we will discuss it later. For now, really important parts here are "distributed
 in the huge untrusted network" and "act maliciously". I believe these two
 phrases describe innovation of blockchain.
 
-Who will "act maliciously"
---------------------------
+### Who will "act maliciously"
 
 Blockchain should tolerate Byzantine failures. Byzantine failure is when
 part of distributed system misbehaves in some way other than just
@@ -110,8 +106,7 @@ computer science and in the industry
 ([DLS](http://groups.csail.mit.edu/tds/papers/Lynch/jacm88.pdf),
 [PFBT](http://pmg.csail.mit.edu/papers/osdi99.pdf)).
 
-Why "distributed in huge untrusted network" part matters
---------------------------------------------------------
+### Why "distributed in huge untrusted network" part matters
 
 Here for simplicity, we talk about Bitcoin. It runs on the Internet and
 there are the huge amount of Bitcoin nodes in different parts of the
@@ -135,8 +130,7 @@ innovation from Bitcoin. Nowadays people figured out how to apply those
 "classic" byzantine fail tolerance algorithms to build blockchain, but 10 years
 ago Bitcoin was true innovation in this problem.
 
-Model for blockchain
-====================
+## Model for blockchain
 
 I use a simple model to talk about blockchain. It is mostly inspired by
 Ethereum wiki which talks a lot about state and state transformations.
@@ -195,8 +189,7 @@ needs time to reach reliable consensus.
 Later we will explore blockchains where All 3 components of discussed
 model differ.
 
-Notes about distributed communication
-=====================================
+## Notes about distributed communication
 
 Every respectful talk about distributes systems refers to
 
@@ -250,8 +243,7 @@ probability of failure. So at some point, we can decide to ignore
 and introduce timeouts which don't change anything from the theoretical
 point of view but work in practice.
 
-To be continued
-===============
+## To be continued
 
 * We have defined what blockchain is.
 * We have briefly covered challenges of distributed systems _(consistency vs
@@ -262,8 +254,8 @@ To be continued
 See you in next posts which will describe Bitcoin, Ethereum, different altcoins
 and the blockchain scalability problem.
 
-Thanks
-======
+## Thanks
+
 
 Many thanks for [Lena V.](https://github.com/elvslv) and other friends who gave
 me priceless feedback. After your response, I've decided to factor out Bitcoin
