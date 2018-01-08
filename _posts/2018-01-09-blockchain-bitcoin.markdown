@@ -14,8 +14,8 @@ book](http://chimera.labs.oreilly.com/books/1234000001802/index.html), to take
 through different blogs which describe how crypto will disrupt your future
 without many technical details.
 
-This isn't the hardcore technical article just light tough on how things work.
-Please make yourself familiar with the article structure before reading. I
+This isn't a hardcore technical article but just a light tough on how things
+work. Please make yourself familiar with the article structure before reading. I
 failed to make this post compact so it's possible to lose track of thoughts at
 some point.
 
@@ -32,7 +32,7 @@ ordinary Bitcoin user. There are several possible roles:
 * a user with a full node
 * a miner
 
-If you familiar with the subject then it's safe to jump to the [How things
+If you are familiar with the subject then it's safe to jump to the [How things
 work](#how-things-work) section. Probably it worth looking to "Highlights"
 section of each story.
 
