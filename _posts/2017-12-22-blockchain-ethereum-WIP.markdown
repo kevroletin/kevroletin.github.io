@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Blockchain overview: Ethereum (WIP)"
-date:   2017-12-22 00:00:00 +1000
+date:   2020-12-22 00:00:00 +1000
 categories: blockchain
 ---
 
