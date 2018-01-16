@@ -126,3 +126,5 @@ because it uses function composition in different sometimes unexpected ways.
 I hope the learning mantra will help you to master functional programming or
 some other skill. Thanks for reading and remember that functions are the most
 fun way to write programs.
+
+{% include disqus.html %}
