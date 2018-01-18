@@ -2,7 +2,7 @@
 layout: post
 title: "Pure functional programming for beginners"
 date:   2018-01-17 00:00:00 +1000
-categories: fun
+categories: fun functional-programming
 ---
 
 ## Step 1
@@ -123,8 +123,39 @@ to basic basics and to spend some time just applying functions. If you are not
 comfortable with functions then Haskell Standard library will look really silly
 because it uses function composition in different sometimes unexpected ways.
 
+## Conclusion
+
+Although this post has started as a pure joke, I want to provide some useful
+conclusion. First of all, the functional Jedi path is [documented
+here](https://github.com/bitemyapp/learnhaskell). Learner's core mission is to:
+
+1. Work on any beginner's book *(or online course)*.
+
+   I've enjoyed [Learn You a Haskell for Great
+   Good!](http://learnyouahaskell.com/chapters). Don't expect too much, though.
+
+2. Solve tasks from [Data61 course](https://github.com/data61/fp-course) *(aka
+   Nicta course)*.
+
+   Be patient and relaxed. Please, appreciate the smart usage of functions to
+   solve every problem. Don't think "I can code similar thing in Java using
+   objects". Each time you catch this thought - just take a deep breath, relax,
+   apply the learning mantra and keep going.
+  
+Those steps are basic basics because they teach you how to apply functions. To
+be more specific, they teach `Functor`, `Applicative` and `Monad` patterns.
+Those emerge naturally in everyday programming. The first time their usage will
+be very energy consuming. After some time your brain will adapt and will start
+to automatically match those instances in real life. I think this "automatic
+matching" is the main reason why functional programmers are so eager to teach
+others. They see something which others don't see.
+
+## Thanks
+
+Thanks for the feedback to Dima N.
+
 I hope the learning mantra will help you to master functional programming or
-some other skill. Thanks for reading and remember that functions are the most
+some other skill. Thank you for reading and remember that functions are the most
 fun way to write programs.
 
 {% include disqus.html %}

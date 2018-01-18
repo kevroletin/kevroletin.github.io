@@ -257,11 +257,11 @@ and the blockchain scalability problem.
 ## Thanks
 
 
-Many thanks for [Lena V.](https://github.com/elvslv) and other friends who gave
-me priceless feedback. After your response, I've decided to factor out Bitcoin
-and Ethereum into separate self-sufficient posts.
+Many thanks to [Lena V.](https://github.com/elvslv) and other friends who gave
+me feedback. After your response, I've decided to factor out Bitcoin and
+Ethereum into separate self-sufficient posts.
 
-Thank for reading, if you have spare minute, please give me some feedback. I
+Thank you for reading, if you have spare minute, please give me some feedback. I
 write just for fun and knowing that the result of my work is useful will bring
 me more fun.
 
