@@ -132,7 +132,8 @@ here](https://github.com/bitemyapp/learnhaskell). Learner's core mission is to:
 1. Work on any beginner's book *(or online course)*.
 
    I've enjoyed [Learn You a Haskell for Great
-   Good!](http://learnyouahaskell.com/chapters). Don't expect too much, though.
+   Good!](http://learnyouahaskell.com/chapters). Don't expect great productivity
+   boost after reading, though.
 
 2. Solve tasks from [Data61 course](https://github.com/data61/fp-course) *(aka
    Nicta course)*.
