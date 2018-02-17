@@ -18,7 +18,7 @@ backward compatibility. Ethereum developers are more open-minded and risky
 persons. They are in constant search for new features and they deploy new stuff
 even if it requires their users to update client software.
 
-Without considering human factor *(or developers factor, don't sure all
+Without considering human factor *(or developers factor, don't sure if all
 developers are ordinary humans)*, the biggest difference is that Ethereum
 implements 2 applications in the single system. Remember my point of view on
 Bitcoin? Bitcoin is a distributed banking-like application *(a cryptocurrency)*.
@@ -49,8 +49,8 @@ Turing complete, which means they can compute everything which can be computed
 *(no offense for such definition)* and one can write a program which never
 terminates. Also, Ethereum script can be associated with an account, or in other
 words, it can be "installed" into blockchain. After installation scripts live
-their own digital life. It can be triggered directly by a transaction from
-"real" user, or by a message from another script.
+their own digital life. Script execution can be triggered directly by a
+transaction from a "real" user, or by a message from another script.
 
 These Blockchain-based contracts are called smart contracts, and smart contracts
 are the main innovation of Ethereum. My intuition for smart contracts is that
@@ -58,8 +58,8 @@ there are independent actors *(or agents)* stored in state. Users can wake up
 actor by transaction and then actor can read state, send messages to other
 actors and write data into the state. This is a cool idea which allows
 implementing some canonical behavior in code so that no one can affect this
-behavior by threats or bribes. This kind of reasoning leads to ideology "Code is
-a law".
+behavior by threats or bribes. This direction of thoughts leads to the ideology
+"Code is a law".
 
 ![]({{ "/assets/2017-12-21-blockchain-intro/ether-smart-contracts.png" |
 absolute_url }})
@@ -109,10 +109,10 @@ node. But validation of Ethereum transaction means the execution of arbitrary
 scripts which can eat a lot of CPU. One even can write an infinite loop in
 Ethereum scripts, how Ethereum ensures validation process will terminate? The
 issue is solved by right incentives. Execution of each instruction in Ethereum
-script costs money *(transaction creator pays)*. So infinite loop costs an
-infinite amount of money and hence impossible. Clearly, with such incentive,
-programmers are motivated to write short programs and prevents abuse of Ethereum
-scripts.
+script costs money *(it's a transaction creator who pays)*. So infinite loop
+costs an infinite amount of money and hence impossible. Clearly, with such
+incentive, programmers are motivated to write short programs and it also
+prevents abuse of Ethereum scripts.
 
 This pattern of combining cryptocurrency with other application is common in
 blockchain world. For example, there is a social network where you pay to create
@@ -252,27 +252,27 @@ Proof Of Stake called Casper.
 
 ![]({{ "/assets/2017-12-21-blockchain-intro/ether-sharding.png" | absolute_url }})
 
-Sharding and replication are bread and butter of distributed system's
+Sharding and replication are bread and butter of a distributed system's
 programmer. Replication increases redundancy and it is useful mostly to increase
 fault tolerance *(it also can increase the performance of certain operations)*.
 Sharding splits load between different nodes and it is useful mostly to improve
 the performance of a system. There is no sharding in Ethereum or Bitcoin. And
 both systems are as redundant as possible. Each full node performs the same
 tasks:
-* stores whole state;
+* stores the whole state;
 * validates the whole state;
 * telegraphs all transactions and blocks.
 
-Redundancy imposes certain limits on Ethereum and Bitcoin performance. But
+Redundancy imposes certain limits on Ethereum and Bitcoin performance. Note that
 transactions validation in Ethereum requires more computational power than
 validation in Bitcoin. The throughput of Ethereum is bigger than the throughput
 of Bitcoin hence it states grows faster. So redundancy is a big issue for
-Ethereum performance. So redundancy is blessing *(it helps to achieve
-resilience)* and curse at the same time.
+Ethereum performance. And it's high redundancy is a blessing *(it helps to
+achieve resilience)* and a curse at the same time.
 
 Sharding is a clever solution for reducing redundancy. Just split work into
-parts and assign different nodes to work on different parts. Few important
-questions arise:
+parts and assign different nodes to work on different shards *(parts)*. Sharding
+raises few important questions:
 * which parts of the system to split *(state, validation, networking)*?
 * wherever to make sharding transparent or expose sharding in end-user APIs?
 * how to make communication between shard possible?
@@ -302,7 +302,7 @@ shards, but no final solution yet *(I mean no solution from Ethereum)*.
 ### Colorful papers
 
 Each cryptocurrency publishes its white paper which is a formal description of
-its new algorithms and ideas. Ethereum published the document called yellow
+its new algorithms and ideas. Ethereum published the document called the yellow
 paper instead of a white paper. This is obviously a joke but several other
 cryptocurrencies did the same thing, so there are a blue paper and a polka dot
 paper.
@@ -314,9 +314,9 @@ a huge amount of money. As a response to the attack, Ethereum developers made
 incompatible changes in Ethereum code, fixed buggy smart contract and rolled
 back transaction which stole money. Technically, incompatible code change and a
 history revert caused the creation of a new currency which was agreed to be the
-"true" Ethereum. The old currency with old history is supported by some
-individuals and renamed to Ethereum classic. Their idea is that code is a law
-and what was done shouldn't be reverted. The event is called the DAO.
+"true" Ethereum. The old currency with the old history survived and was renamed
+to Ethereum classic. It's main idea is that code is a law and what was done
+shouldn't be reverted. The event is called the DAO.
 
 ## To be continued
 
