@@ -29,8 +29,8 @@ will appear to be right)*.
 
 Before we can discuss requirements and implementation I want to provide some
 context to convey you the atmosphere of embedded development. It significantly
-differs from web/desktop development and CI systems for embedded projects have
-some additional requirements compared to CI systems from other domains.
+differs from web/desktop development and hence CI systems for embedded projects
+have some additional requirements compared to CI systems from other domains.
 
 ## Understanding domain
 
@@ -40,6 +40,9 @@ cheap and tiny devices with absurdly small performance finishing at high
 performance computers which are embedded into ridiculously expensive scientific
 or medical equipment. My main experience relates to digital photo/video cameras
 so by embedded device I mean something similar.
+
+
+![]({{ "/assets/2018-02-26-prev-work-ci-1/embedded-world.jpg" | absolute_url }})
 
 ### Target device lives it's own life
 
@@ -61,6 +64,8 @@ battery could cause testing difficulties because sometimes a battery is a part
 of a test. For example, test could require to power device from a battery with
 an unplugged cable to check energy safe regime *(but you should ensure battery
 is fully charged before the test)*.
+
+![]({{ "/assets/2018-02-26-prev-work-ci-1/device-life.png" | absolute_url }})
 
 It takes time to burn firmware and to reboot a device. Sounds obvious but burn
 with reboot can actually take several minutes which is not intuitive. So reboot
@@ -109,6 +114,8 @@ Usual weapon against long tests is parallelism and hence big amount of target
 devices in a testing laboratory. Unfortunately even parallelism doesn't help to
 solve all problems. For example, I saw stress tests which run several days
 *(they should continuously run on one device, hence no parallelism)*.
+
+![]({{ "/assets/2018-02-26-prev-work-ci-1/photo-stand.jpg" | absolute_url }})
 
 ### Device increases entropy of the Universe
 
@@ -201,16 +208,16 @@ testing of embedded devices:
 I didn't mention **virtualization difficulties** as a separate point but it's
 important consequence of 1st one. Nowadays CI systems like [Travis
 CI](https://travis-ci.com) heavily rely on virtualized environment for testing.
-Travis spawns a machine with fresh OS and installs all required software in
-order to run tests. This approach doesn't work smoothly enough for embedded
-devices because a newly created virtual machine *(or a container)* should have a
-connected device to run tests. There are several possible solutions for that
-difficulty but bear in mind that separate target devices is a biggest difficulty
-for organizing CI on such projects.
+Travis spawns machines with fresh OS and installs all required software in order
+to run tests. This approach doesn't work smoothly enough for embedded devices
+because a newly created virtual machine *(or a container)* should have a
+connected device to run tests. So bear in mind that separate target devices is
+the biggest difficulty for organizing CI on such projects.
 
 ## Te be continued
 
-The post appears to be quite long so I split it into two parts, so stay tuned.
+The post happened to be quite long and I split it into two parts, so stay tuned.
+
 Next part will define informal requirements for CI system, briefly describe one
 imperfect implementation and will talk about what system I see in my
 imagination.
