@@ -327,3 +327,5 @@ most popular altcoin but there are many others! I want to cover several
 alternative Proof Of XXX algorithms, performance issues, and scaling solutions.
 
 Thanks for reading.
+
+{% include disqus.html %}
