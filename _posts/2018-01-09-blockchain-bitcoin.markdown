@@ -108,7 +108,7 @@ absolute_url }})
 #### Story
 
 The user runs a data center of specialized mining hardware. Mining produces
-Bitcoins and huge electricity bills. Likely enough, Bitcoin price is high enough
+Bitcoins and huge electricity bills. Likely, Bitcoin price is high enough
 to compensate bills and to provide revenue. Mining requires separate software
 but the user also runs a full client. The user is an active part of Bitcoin
 community because his/her wealth directly depends on the Bitcoin ecosystem
@@ -125,10 +125,10 @@ get a tiny reward daily. So our miner user is also a part of some mining pool.
 
 Mining
 * is an activity required to "commit" transactions of other users; we can think
-  that miners are "servants".
-* requires expensive hardware: video cards or even specialized mining computers.
-* consumes a lot of energy.
-* gives a reward to miners.
+  that miners serve the network;
+* requires expensive hardware: video cards or even specialized mining computers;
+* consumes a lot of energy;
+* gives a reward to miners;
 * is performed *(mostly)* by mining pools.
 
 ## How things work

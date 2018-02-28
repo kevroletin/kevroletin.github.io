@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "In persuit of my 2nd CI system. Part 1"
+title:  "In pursuit of my 2nd CI system. Part 1"
 date:   2018-02-26 00:00:00 +1000
 categories: ci
 ---
@@ -130,16 +130,17 @@ There are also physical signals which are not part of user interface.
 Temperature, electromagnetic interference, voltage levels *(gathered from
 different probes)*, power consumption *(actually computed from voltage level)*
 and so on. Serious hardware development assumes ability to fight serious
-hard-to-reproduce bugs. We live in the age of big data. Why not to use it to
+hard-to-reproduce bugs. Signals recorded with high sampling rate quickly consume
+hard drives. But hey, we live in the age of big data, so why not to use it to
 correlate bugs with overheating or low voltage from a battery?
 
 ### Need moar branches
 
-Also deployment model for embedded devices is different from modern desktop or
-cloud software. Once device has left a factory it's quite problematic to update
-it's firmware. So there is big release day when major functionality must work.
-It's acceptable to leave some minor bugs in release version with assumption that
-user will download and update firmware manually.
+Deployment model for embedded devices is different from modern desktop or cloud
+software. Once device has left a factory it's quite problematic to update it's
+firmware. So there is big release day when major functionality must work. It's
+acceptable to leave some minor bugs in release version with assumption that user
+will download and update firmware manually.
 
 Configuration Management model also differs from desktop/cloud software. It is
 common to maintain many code branches at the same time. There are two main
@@ -152,11 +153,11 @@ one which assumes minimum amount of changes. It's tempting to reuse old
 maintenance branch to create new spin-off, hence developers may work on ancient
 branches. The second reason for creating branches is a large number of hardware
 configurations. It is questionable whether one should use branches or a build
-system to mange hardware configurations. After all, Linux kernel manages
-hardware diversity using build system, so it should be a preferable solution.
-But not all developers are kernel developers, there is time and management
-pressure so new branch appears and developer goes into a bar to take liquid
-painkiller.
+system to mange hardware configurations. Linux kernel manages diverse hardware
+using build system, so it should be a preferable solution. But not all
+developers are kernel developers, there is time and management pressure and a
+new branch appears and developer goes into a bar after his/her work to take
+liquid painkiller.
 
 ### Embedded-land can't into virtualization
 

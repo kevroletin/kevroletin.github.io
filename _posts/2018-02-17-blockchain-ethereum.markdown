@@ -18,7 +18,7 @@ backward compatibility. Ethereum developers are more open-minded and risky
 persons. They are in constant search for new features and they deploy new stuff
 even if it requires their users to update client software.
 
-Without considering human factor *(or developers factor, don't sure if all
+Without considering human factor *(or developers factor, not sure whether all
 developers are ordinary humans)*, the biggest difference is that Ethereum
 implements 2 applications in the single system. Remember my point of view on
 Bitcoin? Bitcoin is a distributed banking-like application *(a cryptocurrency)*.

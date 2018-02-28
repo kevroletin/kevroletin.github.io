@@ -61,7 +61,7 @@ network nodes _(which are not blockchains)_.
 
 First one is a database with sharding. You install the same instance of
 the database server on several nodes and split dataset between them
-*(here we assuming no redundancy, all nodes have different not
+*(here we assume no redundancy, all nodes have different not
 intersecting parts of data)*. If one node fails then your whole
 distributed service becomes malfunctioned since it can't serve data from
 the failed node. This is distributed system which can't tolerate any
@@ -111,7 +111,7 @@ computer science and in the industry
 Here for simplicity, we talk about Bitcoin. It runs on the Internet and
 there are the huge amount of Bitcoin nodes in different parts of the
 World *([tens of thousands](https://bitnodes.earn.com/))*. The core feature
-of Bitcoin is that absolutely anyone can join its network. And no one
+of Bitcoin is that absolutely anyone can join the network. And no one
 can guarantee that arbitrary person who joins network will run the
 trusted software. Most people run the client from Bitcoin developers,
 but some of them run alternative client written in golang, and some of
@@ -127,7 +127,8 @@ explanation)*. There were algorithms which can tolerate Byzantine failures in
 the untrusted network prior to Bitcoin invention. But they don't scale to a
 massive network. So Byzantine fault tolerance in Internet scale is true
 innovation from Bitcoin. Nowadays people figured out how to apply those
-"classic" byzantine fail tolerance algorithms to build blockchain, but 10 years
+"classic" byzantine fault tolerance algorithms to build blockchain
+(see [Tendermit](https://tendermint.com/)), but 10 years
 ago Bitcoin was true innovation in this problem.
 
 ## Model for blockchain
