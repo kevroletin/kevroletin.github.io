@@ -192,7 +192,7 @@ model differ.
 
 ## Notes about distributed communication
 
-Every respectful talk about distributes systems refers to
+Every respectful talk about distributed systems refers to
 
 1.  The CAP theorem.
 2.  The FLP impossibility result.
