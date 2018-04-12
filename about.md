@@ -28,9 +28,10 @@ I am passionate about technologies, especially about software development. I
 often spend my free time learning about interesting stuff like functional
 programming, programming languages or libraries.
 
-Feel free to contact me. In addition to email, you also can easily reach me in
-the telegram, my nick is
-[kevroletin](https://web.telegram.org/#/im?p=@kevroletin).
+Feel free to contact me. In addition to email, you also can easily reach me
+
+* in the **telegram**, my nick is [kevroletin](https://web.telegram.org/#/im?p=@kevroletin);
+* via **twitter**, my nick is [kevroletin](https://twitter.com/kevroletin).
 
 ### Pictures
 
