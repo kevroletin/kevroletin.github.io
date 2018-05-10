@@ -288,7 +288,7 @@ toList (Node n xs) = n : xs
 -- take 2 (hylo toList gen 0) == [0, 1]
 ```
 
-### Effectual folds
+### Effectful folds
 
 TBD.
 
@@ -302,11 +302,11 @@ TBD.
 
 ### Links
 
-* https://bartoszmilewski.com/2017/12/29/stalking-a-hylomorphism-in-the-wild/
-* http://blog.sumtypeofway.com/an-introduction-to-recursion-schemes/ (the whole series)
-* https://jtobin.io/monadic-recursion-schemes
-* http://comonad.com/reader/2009/recursion-schemes/
-* https://www.schoolofhaskell.com/user/edwardk/recursion-schemes/catamorphisms
-* https://hackage.haskell.org/package/recursion-schemes/docs/Data-Functor-Foldable.html
-* http://www.cs.ox.ac.uk/people/jeremy.gibbons/publications/urs.pdf
-* https://www.cs.cmu.edu/~tom7/papers/wang-murphy-recursion.pdf
+* <https://bartoszmilewski.com/2017/12/29/stalking-a-hylomorphism-in-the-wild/>
+* <http://blog.sumtypeofway.com/an-introduction-to-recursion-schemes/ (the whole series)>
+* <https://jtobin.io/monadic-recursion-schemes>
+* <http://comonad.com/reader/2009/recursion-schemes/>
+* <https://www.schoolofhaskell.com/user/edwardk/recursion-schemes/catamorphisms>
+* <https://hackage.haskell.org/package/recursion-schemes/docs/Data-Functor-Foldable.html>
+* <http://www.cs.ox.ac.uk/people/jeremy.gibbons/publications/urs.pdf>
+* <https://www.cs.cmu.edu/~tom7/papers/wang-murphy-recursion.pdf>
