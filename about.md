@@ -37,3 +37,7 @@ Feel free to contact me. In addition to email, you also can easily reach me
 
 I draw pictures for this blog by myself *(unless stated otherwise)* using
 [Krita](https://krita.org/) painting program.
+
+### Identity
+
+Here is [my gpg key](/assets/mykey.asc).
