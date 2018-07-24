@@ -24,14 +24,14 @@ allows us to play with:
 Think about recursion: you can construct recursive data types. You can construct
 recursive values. And you can introduce "loops" in your values:
 
-```
+```haskell
 zeros = (0 :) zeros
 ```
 
 Below is the same code using hand-written data types (note `List a` on both
 sides of equation):
 
-```
+```haskell
 data List a = Leaf | Node a (List a)
 zeros = (Node 0) zeros
 ```
@@ -39,7 +39,7 @@ zeros = (Node 0) zeros
 `Node 0` is a function of a type `List a -> List a` and it can be applied to its
 result. This snippet also can be reformulated like this:
 
-```
+```haskell
 f = Node 0
 zeros = f zeros
 ```
@@ -55,14 +55,14 @@ function. Check and mate.
 That pattern `zeros = f ( f ( f ( ... )))` can be abstracted into more general
 combinator:
 
-```
+```haskell
 fix :: (a -> a) -> a
 fix f = f (fix f)
 ```
 
 And now:
 
-```
+```haskell
 f = Node 0
 zeros = fix f
 ```
@@ -84,7 +84,7 @@ Below are two more examples using open recursion *(see (1) about open
 recursion)*. Note that `succGen` has a type `(t -> [t]) -> (t -> [t])` so, it
 can be applied to itself.
 
-```
+```haskell
 zeroGen f = 0 : f
 zeros = fix zeroGen
 
@@ -118,14 +118,14 @@ In the previous section, we defined several functions and then factored
 recursion out. Here we will do the same thing for types. Let's review our toy
 example:
 
-```
+```haskell
 data List a = Leaf | Node a (List a)
 ```
 
 Here `List a` is used in its own definition. It is explicit recursion, let's
 replace it with an open recursion:
 
-```
+```haskell
 data ListF a n = Leaf | Node a n
 ```
 
@@ -134,14 +134,14 @@ Let's think, `ListF a` has kind `* -> *`, but we want `*`. Hmmm.. this reminds
 me something that we did previously: we "removed arrow" from type `a -> a` by
 using `fix`. Let's do similar for types:
 
-```
+```haskell
 data Fix f = Fix { unFix :: f (Fix f) }
 ```
 
 Here we need to use some indirection with `Fix` and `unfix`, but the idea is the
 same:
 
-```
+```haskell
 type List a = Fix (ListF a)
 ```
 
@@ -172,7 +172,7 @@ data type by attaching additional information to every node. Using that
 technique CVAlgebra receives its children annotated with the corresponding `a`
 values. Pay attention to similarities in these types:
 
-```
+```haskell
 type Algebra f a = f a -> a
 
 type RAlgebra f a = f (Fix f, a) -> a
@@ -188,7 +188,7 @@ attribute (Attr a _) = a
 `a`) by using `Algebra` *(the simplest transformation step defined above)*. I
 added types to describe how transformation happens:
 
-```
+```haskell
 cata :: Functor f => Algebra f a -> Fix f -> a
 cata f = f . fmap (cata f) . unFix
 --       |   |               | f (Fix f)
@@ -201,7 +201,7 @@ I defined `para` using `annotateCurr` helper. Witness that the type of
 note that except for `wrap` helper, body of this function is identical to
 `cata`, and it works in very similar manner:
 
-```
+```haskell
 annotateCurr :: (Functor f) => RAlgebra f a -> Fix f -> (Fix f, a)
 annotateCurr h t = wrap . fmap (annotateCurr h) $ unFix t
   where
@@ -215,7 +215,7 @@ And here again: `annotate` is very similar to the previous function. In types
 `(Fix f, a)` was replaced by `Attr a f`. `wrap` became slightly more complicated
 because we need to "sandwich" annotations between `Fix` layers :)
 
-```
+```haskell
 annotate :: Functor f => CVAlgebra f a -> Fix f -> Fix (Attr a f)
 annotate h =  wrap . fmap (annotate h) . unFix
   where
@@ -232,7 +232,7 @@ layer per call. RCoalgebra can "manually" generate a result and return it
 instead of producing a new layer. CVCoalgebra can either generate a single new
 layer as Coalgebra or it can produce a "cake" of several new layers.
 
-```
+```haskell
 type Coalgebra f a = a -> f a
 
 type RCoalgebra f a = a -> f (Either a (Fix f))
@@ -247,7 +247,7 @@ data Coattr a f n = Automatic a
 
 Note that all unfolds are very similar to each other:
 
-```
+```haskell
 ana :: Functor f => Coalgebra f a -> a -> Fix f
 ana f = Fix . fmap (ana f) . f
 
@@ -268,7 +268,7 @@ futu f = Fix . fmap go . f
 something else. `hylo` takes seed and converts it into something else.
 Basically, it is `cata` applied after `ana`:
 
-```
+```haskell
 hylo :: Functor f => Algebra f a -> Coalgebra f b -> b -> a
 hylo a c = a . fmap (hylo a c) . c
 ```
@@ -276,7 +276,7 @@ hylo a c = a . fmap (hylo a c) . c
 Let's generate an infinite list and convert in into an ordinary list using
 `hylo`:
 
-```
+```haskell
 data ListF a n = Node a n deriving Functor
 
 type List a = Fix (ListF a)

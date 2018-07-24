@@ -159,7 +159,7 @@ developers are kernel developers, there is time and management pressure and a
 new branch appears and developer goes into a bar after his/her work to take
 liquid painkiller.
 
-### Embedded-land can't into virtualization
+## Embedded-land can't into virtualization
 
 Finally, such simple thing as a cable could be a problem. There is very popular
 *(due to it's simplicity)* UART interface which is often used to communicate
