@@ -4,8 +4,6 @@ title: About
 permalink: /about/
 ---
 
-### Me
-
 Hi, my name is Vasiliy Kevroletin and I am software developer from
 [Vladivostok](https://en.wikipedia.org/wiki/Vladivostok).
 
@@ -18,7 +16,7 @@ Throughout my career, I have been working on
 * embedded projects using C++
   + stabilizing and optimizing C++ code for an embedded system
   + implementing libraries and services in C++ (with Lua) and Java (with Groovy)
-* CI system using Java/Groovy (and by directing other people)
+* CI system using Java/Groovy
   + developing a CI system for embedded projects
   + managing a self-sufficient small team which was in charge of development,
     support, and deployment of services for internal use.
