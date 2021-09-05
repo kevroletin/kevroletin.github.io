@@ -42,19 +42,20 @@ about the practice.
 My belief is that we should concentrate on having a positive experience.
 Practice should be easy, so that you want to practice again and again.
 
-First of all, we need to **remove abstractions**:
+First of all, we need to **eliminate difficulties**:
 
--   **scheduling**
+-   simplify scheduling
 
-    I am very flexible and it's easy to reach me out. It's better to
-    have short calls every other day than once per week. No need to
-    prepare.
+    I am very flexible and it's easy to reach me out. We can practice only once
+    or we can agree to practice regularly. The practice can take 15 minutes or 1
+    hour. Everything will work.
 
--   **fear of failure**
+-   eliminate fear of failure
 
-    Language learning takes a lot of time and I understand it. I am ok
-    repeating things 40 times. You don't need to record words on paper,
-    I am ok repeating it for you. You also don't need to prepare.
+    Memorizing things takes a lot of time and I understand that. I am ok
+    repeating things 40 times. You don't need to record words on paper, I am ok
+    repeating it for you. You also don't need to prepare. Practice should be
+    easy and there should be no fear of failure.
 
 Then you need to find a reward. It's hard to track your progress
 especially with language which has "tricky" pronunciation. It's really
