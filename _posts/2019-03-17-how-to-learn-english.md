@@ -168,5 +168,3 @@ quite satisfied with the progress I've made by following the advice from this
 article. If you want to correct something or to just give some hints, don't
 hesitate to write. And have a good time improving your skills by using any
 method which works for you :)
-
-{% include disqus.html %}

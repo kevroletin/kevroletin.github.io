@@ -265,5 +265,3 @@ Ethereum into separate self-sufficient posts.
 Thank you for reading, if you have spare minute, please give me some feedback. I
 write just for fun and knowing that the result of my work is useful will bring
 me more fun.
-
-{% include disqus.html %}

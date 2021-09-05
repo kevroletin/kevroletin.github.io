@@ -222,5 +222,3 @@ The post happened to be quite long and I split it into two parts, so stay tuned.
 Next part will define informal requirements for CI system, briefly describe one
 imperfect implementation and will talk about what system I see in my
 imagination.
-
-{% include disqus.html %}

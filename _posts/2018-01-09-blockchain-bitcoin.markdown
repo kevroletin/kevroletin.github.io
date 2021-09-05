@@ -423,5 +423,3 @@ I plan to make a shorter post about Etherium and then, probably, will touch some
 of the mentioned topics in the following posts.
 
 Thanks for reading.
-
-{% include disqus.html %}

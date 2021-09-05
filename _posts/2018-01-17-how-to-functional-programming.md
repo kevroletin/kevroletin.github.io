@@ -158,5 +158,3 @@ Thanks for the feedback to [Dima N](https://github.com/DNikitenko/).
 I hope the learning mantra will help you to master functional programming or
 some other skill. Thank you for reading and remember that functions are the most
 fun way to write programs.
-
-{% include disqus.html %}
