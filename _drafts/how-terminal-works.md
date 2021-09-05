@@ -6,15 +6,18 @@ categories: debug
 
 This article is an explanation of how modern terminals and command-line tools
 work together. The main goal here is to learn by experimenting. I'll provide
-tools to debug every component mentioned in the discussion. Our main focus is to
-discover **how** things work. To find the explanation **why** things work in a
-certain way, I encourage the reader to visit excellent articles:
+Linux tools to debug every component mentioned in the discussion. Our main focus
+is to discover **how** things work. To find the explanation **why** things work
+in a certain way, I encourage the reader to visit excellent articles:
 
 * [The TTY demystified](https://www.linusakesson.net/programming/tty/)
 * [A Brief Introduction to termios](https://blog.nelhage.com/2009/12/a-brief-introduction-to-termios/)
 
+Please note that I talk solely about Linux (because that what I use), but many
+presented concepts should apply to other Unix-like systems.
+
 Let's start the discussion with an **inaccurate** diagram that demonstrates a
-a general use case for working with a command-line shell:
+general use case for working with a command-line shell:
 
 ```
            (1)   (2)   (3)
@@ -40,22 +43,22 @@ user <---> xterm <--->   cat
 ```
 
 Again, pretty simple. In this unrealistic model (2) is "just a file" xterm and
-bash exchange pain text.
+cat exchange pain text.
 
 In reality, things are slightly more complicated. The simple scheme of "using a
-bidirectional filehandle" to exchange plain text is extended with more features
+bidirectional filehandle to exchange plain text" is extended with more features
 to provide a better user experience. Additional features are:
-1. TUI interfaces. The terminal is drawing characters at an arbitrary part of the
-   screen; command-line tools can ask capabilities of the terminal and they
-   both handle window resize;
+1. TUI interfaces. The terminal is drawing characters at an arbitrary part of
+   the screen; command-line tools can ask capabilities of the terminal and can
+   handle window resize;
 2. job control. Shell organizes processes into logical groups which can be
    paused/resumed or stopped together;
 3. access control for the filehandle (2). Bash has a feature to spawn background
    processes, this might lead to a situation when two processes are writing
    their output into the same filehandle (2) at the same time; there should be 
    some access control mechanism;
-4. "fixing" stupid tools which think that the terminal is a file so that those
-   tools look and feel better.
+4. "fixing" stupid tools which believe that the terminal is just a file with
+   plain text; so that those tools look and feel better.
 
 ## Part 1: Terminal emulator
 
@@ -98,8 +101,12 @@ layout I see:
 * xev: keycode 24 (keysym 0x6ca, Cyrillic_shorti) 
 
 The reason why I am mentioning this here is because xterm modifies its input
-according to certain conventions before sending into tty(2). There are two
-strategies we can use to figure out what xterm actually sends into tty:
+according to certain conventions before sending into tty(2). Hence converting
+keycodes from a keyboard into characters written into (2) happens in 3 steps
+which is not trivial. It is beneficial to be able to trace all these steps.
+
+Let's figure out what xterm sends into tty. There are two strategies we can use
+to accomplish this task:
 
 * `strace`: trace system calls (most likely `write` and `read`, but there are also
   [aio](https://man7.org/linux/man-pages/man7/aio.7.html) API);
@@ -109,11 +116,11 @@ strategies we can use to figure out what xterm actually sends into tty:
 
 ### strace
 
-Let's start with `strace` because, in my opinion, it's quite a practical approach.
-If in your daily life you'll get stuck with misbehaving command-line tools, you
-can attach to a running process and observe what your terminal is writing into
-filehandles and what your shell reads. You don't need to restart already running
-programs to figure out what is going on.
+Let's start with `strace` because, in my opinion, it's quite a practical
+approach. If in your daily life you'll get stuck with misbehaving command-line
+tools, you can attach to a running process and observe what your terminal is
+writing into filehandles and what your shell reads. You don't need to restart
+running programs to figure out what is going on.
 
 First, a little helper to find out PID of a terminal by clicking it with a
 computer mouse (for users of XWindows system):
@@ -122,7 +129,7 @@ computer mouse (for users of XWindows system):
 xprop | grep '_NET_WM_PID(CARDINAL)' | awk '{print $3}'
 ```
 
-Then let's observe what xterm writes and reads into filehandles (please replace
+Then let's observe what xterm writes and reads into/from filehandles (please replace
 `-p 22853` with an appropriate PID):
 
 ```
@@ -166,7 +173,7 @@ tells us that `33` Oct is the same `1b` Hex and it's a `\ESC` (escape)
 ASCII control character. `10` Oct is `08` Hex and its `BS` backspace control
 character (commonly abbreviated as `\b` thanks to C programming language). We
 will discuss ANSI escape sequences and ASCII control characters soon, for now, we
-can confirm that using strace helps to observe what xterm is actually doing. It
+can confirm that using strace helps to observe what xterm is actually doing: it
 sends `qwe\ESC[D\ESC[C` and receives `qwe\b\ESC[C`.
 
 Let's use strace to observe what bash is doing.
@@ -336,7 +343,7 @@ program](/assets/how-terminal-works/display_ascii.c). It executes `stty raw -ech
 on startup so that tty doesn't modify terminal output and hence the tool
 demonstrates what terminal sends into tty.
 
-Pressing a sequence of `a`, `1`, , `Ctrl+d`, `Ctrl+l` gives:
+Pressing a sequence of `a`, `1`, `Ctrl+d`, `Ctrl+l` gives:
 
 ```
 a
@@ -391,7 +398,7 @@ for any string consisting of multi-byte Utf8 characters:
 ```
 
 Let's understand why this is the case. `编程很有趣` is encoded using 15 bytes
-Representing bytes with decimal numbers:
+I've represented bytes with decimal numbers:
 
 ```
 编            程             很            有            趣
@@ -442,8 +449,8 @@ byte.
 ### Rendering graphics
 
 Finally, we are equipped with tools and knowledge to discuss what terminals
-emulators are doing and what they emulate. Terminals (either hardware devices or
-software programs) perform two main tasks:
+emulators emulate. Terminals (either hardware devices or software programs)
+perform two main tasks:
 * visualize the output of tools like bash, cat, top, vi, etc. to the user;
 * pass user input to command-line tools.
 
@@ -474,34 +481,35 @@ tty)~~ output character by character and decides:
 Additional difficulties which make this scheme a little more complicated are:
 * errors handling: both for ill-formed Unicode characters and ill-formed escape
   sequences;
-* emulation: terminal emulators emulate the behavior of previously existed hardware
-  terminals; for that reason they provide instructions (escape sequences) to
-  choose which terminal model to emulate; this will alter emulator's behavior;
+* emulation: terminal emulators emulate the behavior of previously existed
+  hardware terminals; for that reason they provide instructions (escape
+  sequences) to choose which terminal model to emulate; this alters emulator's
+  behavior;
 * there is no single standard that covers the behavior of all terminals and
   terminal emulators.
 
 The last point is, probably the biggest difficulty associated with terminals.
-There is a variety of different terminals and terminal emulators which support
-different features and behave slightly differently. Digging through standards is
-hard and doesn't pay well: terminals often doesn't follow standards by
-implementing only a subset of they implement non-specified behavior 
-differently or they introduce their own new features.
+There is a variety of different hardware terminals and terminal emulators which
+support different features and behave slightly differently. Digging through
+standards is hard and doesn't pay well: terminals often doesn't follow standards
+by implementing only a subset of features or they implement non-specified
+behavior differently or they introduce their own new features.
 
 #### History
 
 My current understanding is that `longlong` ago terminal vendors where
 implementing terminals with similar features, but they implemented different
 APIs. This led to the creation of terminfo - a database of terminal features
-which allowed the creation of software terminal compatibility layer such as
-ncurses library. At some point industry matured and produced an ANSI standard
-that standardized terminal API and gave us words ANSI-compatible terminal and
+which led to the creation of software terminal compatibility libraries such as
+ncurses. At some point industry matured and produced an ANSI standard that
+standardized terminal API and gave us words ANSI-compatible terminal and
 ANSI-escape sequences. The first popular terminal that supported the ANSI
 standard was VT100. It was so successful that it made ANSI not only a standard
 on a paper but also a de-facto standard. That's why nowadays by saying
-"VT100-compatible terminal" and "ANSI-compatible terminal" some people mean the same
-thing. Modern command line tools sometimes aren't concerned with compatibility
-and they might not use terminfo. Instead, they expect an ANSI-compatible
-terminal emulator and assume support for certain features.
+"VT100-compatible terminal" and "ANSI-compatible terminal" some people mean the
+same thing. Modern command line tools sometimes aren't concerned with
+compatibility and they might not use terminfo. Instead, they expect an
+ANSI-compatible terminal emulator and assume support for certain features.
 
 The evolution of terminals didn't stop after the release of the ANSI standard. Modern
 terminal emulators continue to invent new features which have a different level of
@@ -548,7 +556,7 @@ the Internet wisdom to find commonly used escape sequences:
 * [Build your own Command Line with ANSI escape codes](https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html)
 
 Then open two terminals. Get `tty` from one terminal and try to write something
-into this tty from the other terminal window:
+into this tty using the other terminal window:
 
 ```
 xterm1               | xterm2
@@ -567,7 +575,8 @@ printf "\x1b[2J" > /dev/pts/1
 ```
 
 That also works. Let's extend this idea to implement a simple [interactive
-drawing program](/assets/how-terminal-works/wasd_paint.sh) which acts on the following keybindings: 
+drawing program](/assets/how-terminal-works/wasd_paint.sh) which handles the
+following keybindings:
 * `wasd` or `hjkl` - move cursor;
 * `space` - insert `x`;
 * `.` - erase current character by inserting a space;
@@ -701,7 +710,7 @@ Some comments:
   when the user presses arrow keys or keypad keys;
 * changing cursor position and character attributes should be self-explanatory;
 * bracketed paste cause xterm to wrap data inserted from an X clipboard into
-  `\ESC[200~` `\ESC[201~` so that the application can distinguish between user input
+  `\ESC[200~` `\ESC[201~` so that the application can distinguish between keyboard input
   and copy-paste from the clipboard;
 * "Alternate Screen Buffer" is a feature that helps vim to restore the screen after
   it exists; it's common for tui apps to enable alternative screen buffer and
