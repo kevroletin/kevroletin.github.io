@@ -1,0 +1,95 @@
+|              |                                                                | synonym | absolete | in | out | line edit | signals | size |   |
+|--------------+----------------------------------------------------------------+---------+----------+----+-----+-----------+---------+------+---|
+| discard CHAR | CHAR will toggle discarding of output                          |         |        1 |    |     |           |         |      |   |
+| eof CHAR     | CHAR will send an end of file (terminate the input)            |         |          |  1 |     |           |         |      |   |
+| eol CHAR     | CHAR will end the line                                         |         |          |  1 |     |           |         |      |   |
+| eol2 CHAR    | alternate CHAR for ending the line                             |         |          |  1 |     |           |         |      |   |
+| erase CHAR   | CHAR will erase the last character typed                       |         |          |  1 |     |         1 |         |      |   |
+| intr CHAR    | CHAR will send an interrupt signal                             |         |          |  1 |     |           |       1 |      |   |
+| kill CHAR    | CHAR will erase the current line                               |         |          |  1 |     |         1 |         |      |   |
+| lnext CHAR   | CHAR will enter the next character quoted                      |         |          |  1 |     |           |       1 |      |   |
+| quit CHAR    | CHAR will send a quit signal                                   |         |          |  1 |     |           |         |      |   |
+| rprnt CHAR   | CHAR will redraw the current line                              |         |          |  1 |     |         1 |         |      |   |
+| start CHAR   | CHAR will restart the output after stopping it                 |         |        1 |    |     |           |         |      |   |
+| stop CHAR    | CHAR will stop the output                                      |         |        1 |    |     |           |         |      |   |
+| susp CHAR    | CHAR will send a terminal stop signal                          |         |          |  1 |     |           |       1 |      |   |
+| swtch CHAR   | CHAR will switch to a different shell layer                    |       1 |          |    |     |           |         |      | + |
+| werase CHAR  | CHAR will erase the last word typed                            |         |          |  1 |     |         1 |         |      |   |
+| N            | set the input and output speeds to N bauds                     |         |        1 |    |     |           |         |      |   |
+| cols N       | tell the kernel that the terminal has N columns                |         |          |    |     |           |         |    1 |   |
+| columns N    | same as cols N                                                 |       1 |          |    |     |           |         |      |   |
+| drain        | wait for transmission before applying settings (on by default) |         |          |    |     |           |         |      |   |
+| ispeed N     | set the input speed to N                                       |         |        1 |    |     |           |         |      |   |
+| line N       | use line discipline N                                          |         |        1 |    |     |           |         |      |   |
+| min N        | with -icanon, set N characters minimum for a completed read    |         |          |    |     |         1 |         |      |   |
+| ospeed N     | set the output speed to N                                      |         |        1 |    |     |           |         |      |   |
+| rows N       | tell the kernel that the terminal has N rows                   |         |          |    |     |           |         |    1 |   |
+| size         | print the number of rows and columns according to the kernel   |         |          |    |     |           |         |    1 |   |
+| speed        | print the terminal speed                                       |         |        1 |    |     |           |         |      |   |
+| time N       | with -icanon, set read timeout of N tenths of a second         |         |          |    |     |         1 |         |      |   |
+| clocal       | disable modem control signals                                  |       1 |          |    |     |           |         |      |   |
+| cread        | allow input to be received                                     |         |        1 |    |     |           |         |      |   |
+| crtscts      | enable RTS/CTS handshaking                                     |         |        1 |    |     |           |         |      |   |
+| csN          | set character size to N bits, N in [5..8]                      |         |        1 |    |     |           |         |      |   |
+| cstopb       | use two stop bits per character (one with '-')                 |         |        1 |    |     |           |         |      |   |
+| hup          | send a hangup signal when the last process closes the tty      |         |          |    |     |           |       1 |      |   |
+| hupcl        | same as hup                                                    |       1 |          |    |     |           |         |      |   |
+| parenb       | generate parity bit in output and expect parity bit in input   |         |        1 |    |     |           |         |      |   |
+| parodd       | set odd parity (or even parity with '-')                       |         |        1 |    |     |           |         |      |   |
+| cmspar       | use "stick" (mark/space) parity                                |         |        1 |    |     |           |         |      |   |
+| brkint       | breaks cause an interrupt signal                               |         |          |  1 |     |           |       1 |      |   |
+| icrnl        | translate carriage return to newline                           |         |          |  1 |     |           |         |      |   |
+| ignbrk       | ignore break characters                                        |         |          |  1 |     |           |         |      |   |
+| igncr        | ignore carriage return                                         |         |          |  1 |     |           |         |      |   |
+| ignpar       | ignore characters with parity errors                           |         |        1 |    |     |           |         |      |   |
+| imaxbel      | beep and do not flush a full input buffer on a character       |         |        1 |    |     |           |         |      | + |
+| inlcr        | translate newline to carriage return                           |         |          |  1 |     |           |         |      |   |
+| inpck        | enable input parity checking                                   |         |        1 |    |     |           |         |      |   |
+| istrip       | clear high (8th) bit of input characters                       |         |        1 |    |     |           |         |      |   |
+| iutf8        | assume input characters are UTF-8 encoded                      |         |          |  1 |     |           |         |      | + |
+| iuclc        | translate uppercase characters to lowercase                    |         |          |  1 |     |           |         |      |   |
+| ixany        | let any character restart output, not only start character     |         |        1 |    |     |           |         |      |   |
+| ixoff        | enable sending of start/stop characters                        |         |        1 |    |     |           |         |      | ? |
+| ixon         | enable XON/XOFF flow control                                   |         |        1 |    |     |           |         |      |   |
+| parmrk       | mark parity errors (with a 255-0-character sequence)           |         |        1 |    |     |           |         |      |   |
+| tandem       | same as ixoff                                                  |       1 |          |    |     |           |         |      |   |
+| bsN          | backspace delay style, N in [0..1]                             |         |        1 |    |     |           |         |      |   |
+| crN          | carriage return delay style, N in [0..3]                       |         |        1 |    |     |           |         |      |   |
+| ffN          | form feed delay style, N in [0..1]                             |         |        1 |    |     |           |         |      |   |
+| nlN          | newline delay style, N in [0..1]                               |         |        1 |    |     |           |         |      |   |
+| ocrnl        | translate carriage return to newline                           |         |          |    |   1 |           |         |      |   |
+| ofdel        | use delete characters for fill instead of NUL characters       |         |        1 |    |     |           |         |      | + |
+| ofill        | use fill (padding) characters instead of timing for delays     |         |        1 |    |     |           |         |      |   |
+| olcuc        | translate lowercase characters to uppercase                    |         |          |    |   1 |           |         |      |   |
+| onlcr        | translate newline to carriage return-newline                   |         |          |    |   1 |           |         |      |   |
+| onlret       | newline performs a carriage return                             |         |          |    |   1 |           |         |      |   |
+| onocr        | do not print carriage returns in the first column              |         |          |    |   1 |           |         |      |   |
+| opost        | postprocess output                                             |         |          |    |   1 |           |         |      |   |
+| tabN         | horizontal tab delay style, N in [0..3]                        |         |        1 |    |     |           |         |      |   |
+| tabs         | same as tab0                                                   |       1 |          |    |     |           |         |      |   |
+| -tabs        | same as tab3                                                   |       1 |          |    |     |           |         |      |   |
+| vtN          | vertical tab delay style, N in [0..1]                          |         |        1 |    |     |           |         |      |   |
+| crterase     | echo erase characters as backspace-space-backspace             |         |          |    |   1 |           |         |      |   |
+| crtkill      | kill all line by obeying the echoprt and echoe settings        |         |          |    |   1 |           |         |      |   |
+| -crtkill     | kill all line by obeying the echoctl and echok settings        |       1 |          |    |     |           |         |      |   |
+| ctlecho      | echo control characters in hat notation ('^c')                 |         |          |    |   1 |           |         |      |   |
+| echo         | echo input characters                                          |         |          |    |   1 |           |         |      |   |
+| echoctl      | same as ctlecho                                                |       1 |          |    |     |           |         |      |   |
+| echoe        | same as crterase                                               |       1 |          |    |     |           |         |      |   |
+| echok        | echo a newline after a kill character                          |         |          |    |   1 |           |         |      |   |
+| echoke       | same as crtkill                                                |       1 |          |    |     |           |         |      |   |
+| echonl       | echo newline even if not echoing other characters              |         |          |    |   1 |           |         |      |   |
+| echoprt      | echo erased characters backward, between '\' and '/'           |         |          |    |   1 |           |         |      |   |
+| extproc      | enable "LINEMODE"; useful with high latency links              |         |          |    |   1 |           |         |      |   |
+| flusho       | discard output                                                 |         |          |    |   1 |           |         |      |   |
+| icanon       | enable special characters: erase, kill, werase, rprnt          |         |          |    |   1 |           |         |      |   |
+| iexten       | enable non-POSIX special characters                            |         |          |    |   1 |           |         |      |   |
+| isig         | enable interrupt, quit, and suspend special characters         |         |          |    |     |           |       1 |      |   |
+| noflsh       | disable flushing after interrupt and quit special characters   |         |          |    |   1 |           |       1 |      |   |
+| prterase     | same as echoprt                                                |       1 |          |    |     |           |         |      |   |
+| tostop       | stop background jobs that try to write to the terminal         |         |          |    |     |           |       1 |      |   |
+| xcase        | with icanon, escape with '\' for uppercase characters          |         |          |    |   1 |           |         |      |   |
+|--------------+----------------------------------------------------------------+---------+----------+----+-----+-----------+---------+------+---|
+|              |                                                                |      12 |       30 | 18 |  19 |         7 |       8 |    3 |   |
+
+Total: 89 - (12 + 30) = 47

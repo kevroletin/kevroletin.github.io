@@ -91,6 +91,11 @@ can be read by userland (using device descriptors like
 system (X or Wayland) reads Linux keycodes and converts them into its own
 keycodes, and also assigns a keysym. To check how it works one can use:
 
+TODO: https://tldp.org/HOWTO/Keyboard-and-Console-HOWTO-14.html
++ scancodes not keycodes
++ mention dumpkeys
++ mention xkb
+
 * `sudo showkey` to explore Linux keycodes;
 * `xev` (or [`wev`](https://git.sr.ht/~sircmpwn/wev) for Wayland users) to explore GUI events.
 
@@ -338,8 +343,8 @@ It might be cool to visualize the same data in real-time. One can use this bash 
 stty sane -isig -echo -icanon; while true; do od -N 1 -ax -; done
 ```
 
-Or convert `man ascii` into a [small c
-program](/assets/how-terminal-works/display_ascii.c). It executes `stty raw -echo`
+Or convert `man ascii` into a [small c program](/assets/how-terminal-works/display_ascii.c).
+It executes `stty raw -echo`
 on startup so that tty doesn't modify terminal output and hence the tool
 demonstrates what terminal sends into tty.
 
@@ -552,7 +557,7 @@ the Internet wisdom to find commonly used escape sequences:
 
 * [a nice gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)
 * [man console_codes](https://man7.org/linux/man-pages/man4/console_codes.4.html)
-* [xterm manual](https://www.xfree86.org/current/ctlseqs.html)
+* [xterm manual](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s)
 * [Build your own Command Line with ANSI escape codes](https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html)
 
 Then open two terminals. Get `tty` from one terminal and try to write something
@@ -672,8 +677,8 @@ and then output its famous `~` symbol indicating a non-existing line.
 ^[\[4;1H~ ...
 ```
 
-Let's consult xterm's user manual to find out the meaning of ANSI escape sequences
-emitted by vim:
+Let's consult [xterm's user manual](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s)
+to find out the meaning of ANSI escape sequences emitted by vim:
 
 | Sequence      | Meaning                                                                        | Source of info |
 |---------------|--------------------------------------------------------------------------------|----------------|
