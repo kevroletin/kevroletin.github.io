@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "How terminal works. Part 2"
-categories: debug
+title:  "How terminal works. Part 2: pty"
+categories: terminal
 ---
 
 * TOC
@@ -14,13 +14,13 @@ categories: debug
 1. word **tty** originated as an abbreviation of teletypewriter;
 2. in Linux **tty device** originally meant a connection to a terminal;
 3. and later it was extended to refer to any serial-port style device
-   [^ref](https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch18.html).
+   [\[ref\]](https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch18.html).
 
 "serial-port style device" means that the device driver provides an interface to
 a userland that looks like a serial-port device: a filehandle together with
 certain supported `ioctl` calls. Such a device doesn't necessarily use a physical
 serial port, instead it might use the network stack or something else
-[^ref](https://en.wikipedia.org/wiki/Line_discipline).
+[\[ref\]](https://en.wikipedia.org/wiki/Line_discipline).
 
 Linux kernel provides building blocks for creating new tty drivers: tty core and
 several existing tty **line disciplines**. Line discipline is a piece of logic
@@ -161,9 +161,6 @@ groups based on features they control.
   Delays just don't work with pseudo terminals.
 
   [drivers/tty/n_tty.c#L417-L419](https://github.com/torvalds/linux/blob/master/drivers/tty/n_tty.c#L417-L419)
-  > Note that Linux currently ignores TABDLY, CRDLY, VTDLY, FFDLY
-  > and NLDLY.  They simply aren't relevant in the world today.
-  > If you ever need them, add them here.
 
 * swtch
 
@@ -173,7 +170,7 @@ groups based on features they control.
 
   pseudo terminals always (TODO: check) use `n_tty` line discipline.
 
-More details are in the table (TODO).
+More details are in the table (TODO) add link.
 
 ### Relevant features
 

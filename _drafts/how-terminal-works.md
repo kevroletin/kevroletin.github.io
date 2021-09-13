@@ -1,23 +1,47 @@
 ---
 layout: post
-title:  "How terminal works. Part 1"
+title:  "How terminal works. Part 1: xterm"
 categories: terminal
 ---
 
 * TOC
 {:toc}
 
-This article is an explanation of how modern terminals and command-line tools
-work together. The main goal here is to learn by experimenting. I'll provide
+## Motivation
+
+This series is an explanation of how modern terminals and command-line tools
+work together. The main goal here is to learn by **experimenting**. I'll provide
 Linux tools to debug every component mentioned in the discussion. Our main focus
-is to discover **how** things work. To find the explanation **why** things work
-in a certain way, I encourage the reader to visit excellent articles:
+is to discover **how** things work. To find the explanation why things work in a
+certain way, I encourage the reader to visit excellent articles:
 
 * [The TTY demystified](https://www.linusakesson.net/programming/tty/)
 * [A Brief Introduction to termios](https://blog.nelhage.com/2009/12/a-brief-introduction-to-termios/)
 
-Please note that I talk solely about Linux (because that what I use), but many
-presented concepts should apply to other Unix-like systems.
+and to visit a computer history museum:
+
+* [Teletype ASR 33 Part 10: ASR 33 demo](https://www.youtube.com/watch?v=S81GyMKH7zw)
+* [The IBM 1401 compiles and runs FORTRAN II](https://www.youtube.com/watch?v=uFQ3sajIdaM).
+
+Please note that I talk solely about Linux (because that is what I use), but many
+discussed concepts should apply to other Unix-like systems.
+
+I've chosen the "learn by experimenting" approach because that's how I've
+learned about command-line tools. In my case, there was no single "click" moment
+after which I've understood all the things. Instead, it's a never-ending
+process of building mental models, proving them to be wrong, and then adjusting
+those models to reflect new knowledge. 
+
+Target audience are people who wants to start working on command line tools.
+
+The series consists of 3 parts. The first part discusses how xterm work. Parts 2
+and 3 talk about different features of tty:
+
+* Part 1: xterm
+* Part 2: pty
+* Part 3: session.
+
+## Introduction
 
 Let's start the discussion with an **inaccurate** diagram that demonstrates a
 general use case for working with a command-line shell:
@@ -87,19 +111,15 @@ to explore how xterm works. Until the part 2 we will ignore the existence of tty
 and will concentrate on exploring xterm's behavior.
 
 Let's start by discussing a bi-directional link between a user and xterm.
-Converting keycodes that come from a keyboard into GUI events happens in two
+Converting scancodes that come from a keyboard into GUI events happens in two
 steps. First, Linux handles hardware events and turns them into keycodes that
 can be read by userland (using device descriptors like
 `/dev/input/by-id/usb-2.4G_2.4G_Wireless_Device-event-kbd`). Second, Windows
 system (X or Wayland) reads Linux keycodes and converts them into its own
-keycodes, and also assigns a keysym. To check how it works one can use:
+keycodes, and also assigns a keysym (i.e. a Unicode character). To check how it
+works one can use:
 
-TODO: https://tldp.org/HOWTO/Keyboard-and-Console-HOWTO-14.html
-+ scancodes not keycodes
-+ mention dumpkeys
-+ mention xkb
-
-* `sudo showkey` to explore Linux keycodes;
+* `sudo showkey` to explore Linux keycodes *(visit [this page](https://tldp.org/HOWTO/Keyboard-and-Console-HOWTO-14.html) for more info)*;
 * `xev` (or [`wev`](https://git.sr.ht/~sircmpwn/wev) for Wayland users) to explore GUI events.
 
 For example, when I press the `q` button on my keyboard, depending on my keyboard
@@ -116,11 +136,11 @@ which is not trivial. It is beneficial to be able to trace all these steps.
 Let's figure out what xterm sends into tty. There are two strategies we can use
 to accomplish this task:
 
-* `strace`: trace system calls (most likely `write` and `read`, but there are also
-  [aio](https://man7.org/linux/man-pages/man7/aio.7.html) API);
+* `strace`: trace system calls *(we will trace `write` and `read`, but be aware that there are also
+  [aio](https://man7.org/linux/man-pages/man7/aio.7.html) API)*;
 * run a command-line tool that will
   * disable tty's input/output processing using `stty raw -echo -isig`
-  * logs its inputs
+  * logs its inputs.
 
 ### strace
 
@@ -213,7 +233,8 @@ useful to strace both a terminal and bash, let's experiment. Let's execute
 First, let's get the PID of a shell and then execute `cat`
 
 ```
-sh-4.4$ echo $$
+echo $$
+
 10519
 sh-4.4$ cat -
 ```
@@ -222,7 +243,8 @@ Then in the other terminal window let's find out the PID of `cat` using "parent 
 option of ps:
 
 ```
-sh-4.4$ ps --ppid 10519
+ps --ppid 10519
+
   PID TTY          TIME CMD
 10560 pts/5    00:00:00 cat
 ```
@@ -551,9 +573,7 @@ The moral here is that:
     and writing enough "if" conditions one can achieve terminal-independent code
     for modern terminals.
 
-#### Practice
-
-##### Ask xterm to execute commands
+### Practice 1: ask xterm to execute commands
 
 Let's ask xterm to execute something interesting for us. First, let's consult with
 the Internet wisdom to find commonly used escape sequences:
@@ -638,7 +658,7 @@ $  /tmp              x x x x x
                          x
 ```
 
-##### Explore vim output
+### Practice 2: Explore vim output
 
 In the last experiment, we were sending ANSI escape sequences to xterm. Now
 let's go in the opposite direction. Let's see what existing TUI programs send to
