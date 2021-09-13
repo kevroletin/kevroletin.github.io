@@ -1,8 +1,11 @@
 ---
 layout: post
 title:  "How terminal works. Part 1"
-categories: debug
+categories: terminal
 ---
+
+* TOC
+{:toc}
 
 This article is an explanation of how modern terminals and command-line tools
 work together. The main goal here is to learn by experimenting. I'll provide
@@ -60,7 +63,7 @@ to provide a better user experience. Additional features are:
 4. "fixing" stupid tools which believe that the terminal is just a file with
    plain text; so that those tools look and feel better.
 
-## Part 1: Terminal emulator
+## User input
 
 Requirement above and 50 years of history led us to this scheme:
 
@@ -242,7 +245,7 @@ sending it to a consumer. The big limitation of such an approach is that reading
 sequences like `\33[D\33[C\n` requires a certain patience and might be quite hard
 if applications output a lot of data  ¯\_(ツ)_/¯.
 
-#### Printing non-printable
+### Printing non-printable
 
 While playing with strace we've encountered sequences like this `\33[D\33[C`
 which I've later written like this: `\ESC[D\ESC[C`. In my daily life I sometimes
@@ -451,7 +454,7 @@ Each byte starts with `1` indicating that it's a part of a multi-byte character.
 Also, each byte contains an indication if it's the first byte or a continuation
 byte.
 
-### Rendering graphics
+## Bash output
 
 Finally, we are equipped with tools and knowledge to discuss what terminals
 emulators emulate. Terminals (either hardware devices or software programs)
@@ -727,7 +730,7 @@ tool. Digging through ANSI escape codes might seem complicated but with practice
 it quickly becomes easier. I wish there would be a tool that would create a
 table above automatically ¯\_(ツ)_/¯.
 
-### Conclusion
+## Conclusion
 
 With disabled tty features, we've explored how keyboard input from users reaches
 command-line tools. Then we've explored that the output of command-line tools is
