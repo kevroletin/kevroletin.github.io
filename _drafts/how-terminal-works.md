@@ -56,7 +56,7 @@ The user interacts with bash using terminal emulator xterm. xterm is a GUI app t
 receives "key pressed" events and writes corresponding characters into
 a bidirectional filehandle (2). Bash reads those characters from (2) does something
 and sends the output back to xterm, using the same filehandle (2). Xterm reads bash
-output from (2) and renders them on the screen. (2) is "just a file" and this
+outputs from (2) and renders them on the screen. (2) is "just a file" and this
 communication scheme looks pretty simple.
 
 If the user asks bash to execute a command, let's say `cat log.txt` then bash
@@ -75,7 +75,7 @@ cat exchange pain text.
 In reality, things are slightly more complicated. The simple scheme of "using a
 bidirectional filehandle to exchange plain text" is extended with more features
 to provide a better user experience. Additional features are:
-1. TUI interfaces. The terminal is drawing characters at an arbitrary part of
+1. TUI interfaces. The terminal can draw characters at an arbitrary part of
    the screen; command-line tools can ask capabilities of the terminal and can
    handle window resize;
 2. job control. Shell organizes processes into logical groups which can be
@@ -98,7 +98,7 @@ user <---> xterm <---> tty <---> bash
 ```
 
 The first thing to notice is a "middle man" **tty** between xtem and bash. We
-will discuss tty in detail in the part 2. For now, we will just say that:
+will discuss tty in detail in the part 3. For now, we will just say that:
 * tty sits between xterm and bash and passes data from one to the other in both
   directions;
 * tty can be configured and depending on its configuration it will "slightly"
