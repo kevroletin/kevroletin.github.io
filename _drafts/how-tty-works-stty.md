@@ -172,7 +172,7 @@ groups based on features they control.
 
   pseudo terminals always (TODO: check) use `n_tty` line discipline.
 
-More details are in the table (TODO) add a link.
+More details are in [this table](/assets/how-tty-works/stty_summary.org).
 
 ### Relevant features
 

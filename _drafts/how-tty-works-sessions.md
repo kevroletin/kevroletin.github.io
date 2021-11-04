@@ -117,8 +117,7 @@ int main(int argc,  char* argv[]) {
 Good programmers borrow, so let's borrow the `copy_loop` routine to copy data
 between tty(2) and tty(4) from the source code of `script` utility
 ([util-linux/lib/pty-session.c:ul_pty_proxy_master](https://github.com/karelzak/util-linux/blob/master/lib/pty-session.c#L520)
--> [TODO: link]()).
-
+-> [/assets/how-tty-works/create_tty_1.c:35](/assets/how-tty-works/create_tty_1.c)).
 
 Running our newly created program reveals `sh: no job control in this shell`
 error message. Despite the "no job control" problem, `sh` seem to work and it

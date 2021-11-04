@@ -28,9 +28,9 @@ discussed concepts should apply to other Unix-like systems.
 
 I've chosen the "learn by experimenting" approach because that's how I've
 learned about command-line tools. In my case, there was no single "click" moment
-after which I've understood all the things. Instead, it's a never-ending
-process of building mental models, proving them to be wrong, and then adjusting
-those models to reflect new knowledge. 
+after which I've understood all the things. Instead, I've learned through a
+never-ending process of building mental models, proving them to be wrong, and
+then adjusting those models to reflect new knowledge.
 
 Target audience are people who wants to start working on command line tools.
 
