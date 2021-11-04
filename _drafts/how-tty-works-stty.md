@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "How terminal works. Part 2: pty"
+title:  "How terminal works. Part 3: pty, stty"
 categories: terminal
 ---
 
@@ -37,10 +37,12 @@ diagram let's call that filehandle a slave filehandle *(note, this is a
 simplification, one terminal might be used to represent several logical "seats",
 see [multiseat](https://www.freedesktop.org/wiki/Software/systemd/multiseat/))*:
 
-TODO: draw a diagram
 ```
-¯\_(ツ)_/¯ <---> ... <---> bash
-                     slave
+          Terminal            Computer
+           +-----+            +------+
+¯\_(ツ)_/¯ |     | =---------=|bash  |
+           +-----+  cable     |      |
+           xxxxxxx            +------+
 ```
 
 To support software terminal emulators similarly to hardware terminals
@@ -102,8 +104,8 @@ Notice that all processes run in the same session and share the same tty. `yes`
 and `sleep` share the same process group. `ps` is marked with `+` which means
 "is in the foreground process group".
 
-Note that the term "job" is a bash-specific term; tty doesn't know about
-it.
+Note that the term "job" is a synonym for a process group (see `man
+credentials`).
 
 We will discuss sessions and process groups in more detail later. That brief
 introduction should be enough however to understand tty settings that we will
@@ -170,7 +172,7 @@ groups based on features they control.
 
   pseudo terminals always (TODO: check) use `n_tty` line discipline.
 
-More details are in the table (TODO) add link.
+More details are in the table (TODO) add a link.
 
 ### Relevant features
 
@@ -195,7 +197,8 @@ discuss the groups that I've chosen to organize all available options.
 
   tty sends data that came from xterm back to xterm so that the user can see
   what he/she is typing; note that echoing control characters in case of enabled
-  the line editor is more complicated than just sending the same characters back (TODO: rephrase);
+  line editor is a more complicated task than just sending the same
+  characters back;
 
 * line editor feature
 
@@ -218,7 +221,7 @@ discuss the groups that I've chosen to organize all available options.
 
 ### Combination setting
 
-Useful combinations are:
+The most useful combinations are:
 
 * `stty sane` - combines enabled echo, line editor, output processing to make
   text tools look nice and common key bindings;
@@ -254,7 +257,7 @@ Equipped with the knowledge of tty options let's observe
 ### Line editor
 
 We've already observed that tty can allow you to edit the current input line and
-to delete a previous character, a word of the whole line. Let's quickly repeat
+to delete a previous character, or a word, or the whole line. Let's quickly repeat
 the experiment from Part 1, but instead of `strace` let's play with bash
 scripts. We'll use one xterm window to receive input and the other to visualize
 what tty is sending to our bash script. Open two xterm windows, and in the first
@@ -425,7 +428,7 @@ strace -f -e 'trace=!all' -p 19062
    
    Hence in practice delivery of the `SIGHUP` signal depends on the behavior of a
    command-line shell such as bash. Some experimentation reveals that, for
-   example, `zsh` has a slightly different behavior and it doesn't send `SIGHUP`
+   example, `zsh` has slightly different behavior and it doesn't send `SIGHUP`
    to running background jobs. For example, in zsh
 
    ```
@@ -442,7 +445,7 @@ foreground/background process groups. And then we've experimented with tty's
 features. We also discovered that many stty's options don't apply to pty and
 hence can be safely ignored while working with terminal emulators.
 
-In the last Part 3 of this post series, we will continue exploring tty features
+In the final Part 4 of this post series, we will continue exploring tty features
 by writing C code. We will develop a simple analog of a `script` utility with the
 goal of understanding sessions and process groups better. Stay tuned :)
 
@@ -450,7 +453,7 @@ goal of understanding sessions and process groups better. Stay tuned :)
 
 * input processing 
 
-  tty replaces some input characters that come from the master filehandle with
+  tty replaces some input characters that comes from the master filehandle with
   some other characters:
 
   * eof CHAR   - CHAR will send an end of file (terminate the input)
