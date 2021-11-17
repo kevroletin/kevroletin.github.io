@@ -9,7 +9,7 @@ categories: terminal
 
 ## Motivation
 
-This blogs series explains how modern terminals and command-line tools work. The
+This blog series explains how modern terminals and command-line tools work. The
 main goal here is to learn by **experimenting**. I'll provide Linux tools to
 debug every component mentioned in the discussion. Our main focus is to discover
 **how** things work. For the explanation of **why** things work in a certain
@@ -71,7 +71,7 @@ user <---> xterm <--->   cat
 ```
 
 Again, pretty simple. In this unrealistic model (2) is "just a file" xterm and
-cat exchange pain text.
+cat exchange plain text.
 
 In reality, things are slightly more complicated. The simple scheme of "using a
 bidirectional filehandle to exchange plain text" is extended with more features
@@ -80,7 +80,7 @@ to provide a better user experience. Additional features are:
    the screen; command-line tools can ask capabilities of the terminal and can
    handle window resize;
 2. job control. Shell organizes processes into logical groups which can be
-   paused/resumed or stopped together;
+   paused/resumed or stopped altogether;
 3. access control for the filehandle (2). Bash has a feature to spawn background
    processes, this might lead to a situation when two processes are writing
    their output into the same filehandle (2) at the same time; there should be 
@@ -98,17 +98,17 @@ user <---> xterm <---> tty <---> bash
 
 ```
 
-The first thing to notice is a "middle man" **tty** between xtem and bash. We
-will discuss tty in detail in the parts 3 and 4. For now, we will just say that:
+The first thing to notice is a "middle man" **tty** between xterm and bash. We
+will discuss tty in detail in parts 3 and 4. For now, we will just say that:
 * tty sits between xterm and bash and passes data from one to the other in both
   directions;
-* tty can be configured and depending on its configuration it will "slightly"
-  alter data it receives from one side before passing to the other side.
+* tty can be configured and depending on its configuration, it will "slightly"
+  alter data it receives from one side before passing to the other.
 * there is command `stty raw -echo -isig` which configures tty to pass data "as
   is without modification".
   
 Using `stty raw -echo -isig` to disable most effects of tty is our main strategy
-to explore how xterm works. Until the part 3 we will ignore the existence of tty
+to explore how xterm works. Until the part 3, we will ignore the existence of tty
 and will concentrate on exploring xterm's behavior.
 
 Let's start by discussing a bi-directional link between a user and xterm.
@@ -118,7 +118,7 @@ can be read by userland (using device descriptors like
 `/dev/input/by-id/usb-2.4G_2.4G_Wireless_Device-event-kbd`). Second, Windows
 system (X or Wayland) reads Linux keycodes and converts them into its own
 keycodes, and also assigns a keysym (i.e. a Unicode character). To check how it
-works one can use:
+works, one can use:
 
 * `sudo showkey` to explore Linux keycodes *(visit [this page](https://tldp.org/HOWTO/Keyboard-and-Console-HOWTO-14.html) for more info)*;
 * `xev` (or [`wev`](https://git.sr.ht/~sircmpwn/wev) for Wayland users) to explore GUI events.
@@ -131,7 +131,7 @@ layout I see:
 
 The reason why I am mentioning this here is because xterm modifies its input
 according to certain conventions before sending into tty(2). Hence converting
-keycodes from a keyboard into characters written into (2) happens in 3 steps
+keycodes from a keyboard into characters written into (2) happens in 3 steps,
 which is not trivial. It is beneficial to be able to trace all these steps.
 
 Let's figure out what xterm sends into tty. There are two strategies we can use
@@ -146,7 +146,7 @@ to accomplish this task:
 ### strace
 
 Let's start with `strace` because, in my opinion, it's quite a practical
-approach. In your daily life if you'll get stuck with misbehaving command-line
+approach. In your daily life, if you'll get stuck with misbehaving command-line
 tools, you can attach to a running process and observe what your terminal is
 writing into filehandles and what your shell reads. You don't need to restart
 running programs to figure out what is going on.
@@ -184,7 +184,7 @@ read(4, "e", 4096)                      = 1
 
 That makes sense. xterm sends (writes) `q`. tty+bash echoes back `q` to display
 it so that the user can see what he/she entered. Then a sequence `we` follows the
-same pattern. Now I'll try arrow keys: the left arrow and then the right arrow:
+same pattern. Now, I'll try arrow keys: the left arrow and then the right arrow:
 
 ```
 write(4, "\33[D", 3)                    = 3
@@ -197,7 +197,7 @@ read(4, "\33[C", 4096)                  = 3
  | 00000  1b 5b 43                                          .[C              |
 ```
 
-For left arrow key xterm sends `\33[D` and receives back `\10`. `man ascii`
+For left arrow key, xterm sends `\33[D` and receives back `\10`. `man ascii`
 tells us that `33` Oct is the same `1b` Hex and it's a `\ESC` (escape)
 ASCII control character. `10` Oct is `08` Hex and its `BS` backspace control
 character (commonly abbreviated as `\b` thanks to C programming language). We
@@ -240,7 +240,7 @@ echo $$
 sh-4.4$ cat -
 ```
 
-Then in the other terminal window let's find out the PID of `cat` using "parent PID"
+Then in the other terminal window, let's find out the PID of `cat` using "parent PID"
 option of ps:
 
 ```
@@ -253,7 +253,7 @@ ps --ppid 10519
 On my system, I am observing that xterm writes characters one by one immediately
 after I've pressed a keyboard button. Yet `cat` receives the whole line only
 after I've pressed Enter. Moreover, I can use the Backspace key to erase
-previously entered characters which is relatively complicated logic. This logic
+previously entered characters, which is relatively complicated logic. This logic
 is part of what tty is capable of.
 
 ```
@@ -271,7 +271,7 @@ if applications output a lot of data  ¯\_(ツ)_/¯.
 ### Printing non-printable
 
 While playing with strace we've encountered sequences like this `\33[D\33[C`
-which I've later written like this: `\ESC[D\ESC[C`. In my daily life I sometimes
+which I've later written like this: `\ESC[D\ESC[C`. In my daily life, I sometimes
 encounter different notations, for example `\u001b[D\u001b[C`, `\x1b[D\x1b[C`,
 or something else. Different software uses different conventions for visualizing
 non-printable characters. Also, many programming languages have a way to embed
@@ -307,7 +307,7 @@ printf "\x1b" > data.txt
   console.dir( fs.readFileSync('/tmp/data.txt', 'utf8') )
   ```
 
-To make things more confusing some popular programming languages support syntax
+To make things more confusing, some popular programming languages support syntax
 for embedding non-printable characters into string literals, but doesn't provide
 easily accessible function to convert a string into the same notation. For
 example, using the C programming language, I can easily make a string containing
@@ -371,7 +371,7 @@ stty sane -isig -echo -icanon; while true; do od -N 1 -ax -; done
 
 Or convert `man ascii` into a [small c program](/assets/how-terminal-works/display_ascii.c).
 It executes `stty raw -echo`
-on startup so that tty doesn't modify terminal output and hence the tool
+on startup, so that tty doesn't modify terminal output and hence the tool
 demonstrates what terminal sends into tty.
 
 Pressing a sequence of `a`, `1`, `Ctrl+d`, `Ctrl+l` gives:
@@ -400,12 +400,12 @@ EOT (end of transmission)
 which is the same as `Ctrl+Alt+d`, Shift is just ignored.
 
 That behavior of xterm is **not** set in stone and can be configured in a
-terminal-dependent way. Depending on its configuration xterm would send
+terminal-dependent way. Depending on its configuration, xterm would send
 different characters or escape sequences in response to `Ctrl+Alt+Shift`
 combination. Here is the discussion about xterm [modified
 keys](https://invisible-island.net/xterm/modified-keys.html).
 
-### Utf8
+### UTF-8
 
 Utf8 has a few nice features which I didn't appreciate enough until
 recently:
