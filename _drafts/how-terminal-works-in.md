@@ -34,8 +34,8 @@ then adjusting those models to reflect new knowledge.
 
 Target audience are people who wants to start working on command line tools.
 
-The series consists of 3 parts. The first part discusses how xterm work. Parts 2
-and 3 talk about different features of tty:
+The series consists of 4 parts. The first two parts discuss how xterm work. Parts 3
+and 4 talk about different features of tty:
 
 * Part 1: Xterm, user input;
 * Part 2: Xterm, CLI tool output;
