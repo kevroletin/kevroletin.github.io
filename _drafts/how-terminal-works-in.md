@@ -4,6 +4,8 @@ title:  "How terminal works. Part 1: Xterm, user input"
 categories: terminal
 ---
 
+![]("/assets/how-terminal-works/img/terminal_and_shell.jpg")
+
 * TOC
 {:toc}
 

@@ -4,6 +4,8 @@ title:  "How terminal works. Part 2: Xterm, CLI tools output"
 categories: terminal
 ---
 
+![]("/assets/how-terminal-works/img/debug.jpg")
+
 * TOC
 {:toc}
 

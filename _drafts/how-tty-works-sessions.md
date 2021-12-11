@@ -4,6 +4,11 @@ title:  "How terminal works. Part 4: pty, sessions"
 categories: terminal
 ---
 
+![]("/assets/how-terminal-works/img/terminal.jpg")
+
+* TOC
+{:toc}
+
 We will finish discussion of tty features by writing a simplified version of
 [script](https://man7.org/linux/man-pages/man1/script.1.html) utility. With a
 few simplifications we will be able to post most of the code here. The task will

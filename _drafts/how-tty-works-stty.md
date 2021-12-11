@@ -4,6 +4,8 @@ title:  "How terminal works. Part 3: pty, stty"
 categories: terminal
 ---
 
+![]("/assets/how-terminal-works/img/tty_in_the_middle.jpg")
+
 * TOC
 {:toc}
 
