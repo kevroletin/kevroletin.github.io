@@ -11,24 +11,25 @@ categories: terminal
 
 ## Bash output
 
-In this blog post we will discuss what terminal emulators emulate.
+In this blog post, we will discuss what terminal emulators emulate.
 
-Terminals (either hardware devices or software programs) perform two main tasks:
+Terminals (either hardware devices or software programs) perform two primary tasks:
 * visualize the output of tools like bash, cat, top, vi, etc. to the user;
 * pass user input to command-line tools.
 
-We've already discussed how the terminal handles user input. Now let's discuss how
-it visualizes bash output. xterm maintains state of a "scene" (a buffer) and
-exposes API to modify that state. API is centered around a concept of a cursor
-and instructions which modify the buffer. For example:
+We've already discussed how the terminal handles user input. Now let's discuss
+how it visualizes bash output. xterm maintains the state of a "scene" (a buffer)
+and exposes API to modify that state. API has a concept of a cursor and provides
+instructions to move cursor and change the buffer. For example:
 * insert a character in the current position and move the cursor to the right (I
-  am sorry for [RTL scripts](https://en.wikipedia.org/wiki/Right-to-left_script));
+  am sorry for [RTL
+  scripts](https://en.wikipedia.org/wiki/Right-to-left_script));
 * move the cursor in different directions;
 * change color and other properties of newly rendered characters;
 * erase characters, clear a line or clear the whole buffer; 
 * etc. ...
 
-I guess the phrase "xterm exposes API" sounds too modern for how API is actually
+I guess the phrase "xterm exposes API" sounds too modern for how API is
 organized. In reality, xterm just parses text which comes from bash and
 separates printable characters from commands. Commands are either
 * single-byte ASCII control characters;
@@ -43,43 +44,44 @@ tty)~~ output character by character and decides:
 Additional difficulties which make this scheme a little more complicated are:
 * errors handling: both for ill-formed Unicode characters and ill-formed escape
   sequences;
-* emulation: terminal emulators emulate the behavior of previously existed
-  hardware terminals; for that reason they provide instructions (escape
-  sequences) to choose which terminal model to emulate; this alters emulator's
-  behavior;
+* emulation: terminal emulators emulate the behavior of previously existing
+  hardware terminals; for that reason, they provide instructions (escape
+  sequences) to choose which terminal model to emulate; this alters the
+  emulator's behavior;
 * there is no single standard that covers the behavior of all terminals and
   terminal emulators.
 
-The last point is, probably the biggest difficulty associated with terminals.
+The last point is probably the biggest difficulty associated with terminals.
 There is a variety of different hardware terminals and terminal emulators which
-support different features and behave slightly differently. Digging through
-standards is hard and doesn't pay well: terminals often doesn't follow standards
-by implementing only a subset of features or they implement non-specified
-behavior differently or they introduce their own new features.
+support distinct features and behave slightly differently. Digging through
+standards is hard and doesn't pay well: terminals rarely follow standards by
+implementing only a subset of features or they implement non-specified behavior
+differently or they introduce their own new features.
 
 ## History
 
-My current understanding is that `longlong` ago terminal vendors where
+My current understanding is that `longlong` ago terminal vendors were
 implementing terminals with similar features, but they implemented different
 APIs. This led to the creation of terminfo - a database of terminal features
 which led to the creation of software terminal compatibility libraries such as
-ncurses. At some point industry matured and produced an ANSI standard that
-standardized terminal API and gave us words ANSI-compatible terminal and
+ncurses. At some point, industry matured and produced an ANSI standard that
+standardized terminal API and gave us the words ANSI-compatible terminal and
 ANSI-escape sequences. The first popular terminal that supported the ANSI
-standard was VT100. VT100 was so successful that it made ANSI not only a standard
-on a paper but also a de-facto standard. That's why nowadays by saying
+standard was VT100. VT100 was so successful that it made ANSI not only a
+standard on paper but also a de facto standard. That's why nowadays by saying
 "VT100-compatible terminal" and "ANSI-compatible terminal" some people mean the
-same thing. Modern command line tools sometimes aren't concerned with
-compatibility and they might not use terminfo. Instead, they expect an
+same thing. Modern command-line tools sometimes don’t care about compatibility
+with ancient terminals and they might not use terminfo. Instead, they expect an
 ANSI-compatible terminal emulator and assume support for certain features.
 
-The evolution of terminals didn't stop after the release of the ANSI standard. Modern
-terminal emulators continue to invent new features which have a different level of
-adoption. Here are examples of features with different level of support:
+The evolution of terminals didn't stop after the release of the ANSI standard.
+Modern terminal emulators continue to invent new features which have a different
+level of adoption. Here are examples of features with different levels of
+support:
 
-* a widely supported non-standard feature: enable/disable alternative screen buffer
-  `\ESC[?1049h` and `\ESC[?1049l`; tui programs use it to restore terminal content
-  after they finish;
+* a widely supported non-standard feature: enable/disable alternative screen
+  buffer `\ESC[?1049h` and `\ESC[?1049l`; tui programs use it to restore
+  terminal content after they finish;
 * a rare feature: urxvt's "set background image" `\ESC]20` doesn't seem to have
   support in other terminals;
 * somewhere in between: [truecolor escape
@@ -88,27 +90,27 @@ adoption. Here are examples of features with different level of support:
 
 The moral here is that:
 
-* terminals are difficult to understand because of an uncountable amount of small details;
+* terminals are difficult to understand because of an uncountable amount of details;
 
-  history led us to a situation when there are many terminals (both hardware
-  and software emulators); they have slightly different behavior and there is no
-  single document describing a "reference terminal";
+  history led us to a situation when there are many terminals (both hardware and
+  software emulators); they have different behavior and there is no single
+  document describing a "reference terminal";
 
 * focusing on modern software terminal emulators makes life easier;
 
   modern major terminal emulators are ANSI compatible and hence:
-  * they support similar syntax for ANSI escape sequences (with differences in how
-    errors are handled and how arguments for non-standard commands are parsed,
-    a good example is [truecolor escape
+  * they support similar syntax for ANSI escape sequences (with differences in
+    error handling and parsing of arguments for non-standard commands, a good
+    example is [truecolor escape
     codes](https://github.com/termstandard/colors));
   * they support many similar features, so by using widely supported features
-    and writing enough "if" conditions one can achieve terminal-independent code
-    for modern terminals.
+    and writing enough "if" conditions, one can achieve terminal-independent
+    code for modern terminals.
 
 ## Practice 1: ask xterm to execute commands
 
-Let's ask xterm to execute something interesting for us. First, let's consult with
-the Internet wisdom to find commonly used escape sequences:
+Let's ask xterm to execute something interesting for us. First, let's consult
+with the Internet wisdom to find commonly used escape sequences:
 
 * [a nice gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)
 * [man console_codes](https://man7.org/linux/man-pages/man4/console_codes.4.html)
@@ -197,11 +199,10 @@ let's go in the opposite direction. Let's see what existing TUI programs send to
 xterm. One way to capture the output of command-line tools is to use utilities
 like [script](https://man7.org/linux/man-pages/man1/script.1.html),
 [autoexpect](https://linux.die.net/man/1/autoexpect) or
-[aciinema](https://asciinema.org/) (we will discuss how these tools work in the
-part 2). They all capture the output of command-line programs in different
-formats. `script` captures only the output and stores it as is. `autoexpect`
-captures both inputs and outputs but it uses a backslash to quote certain
-characters.
+[aciinema](https://asciinema.org/) (we will discuss how these tools work in part
+4). They all capture the output of command-line programs in different formats.
+`script` captures only the output and stores it as is. `autoexpect` captures
+both inputs and outputs, but it uses a backslash to quote certain characters.
 
 ```
 autoexpect -f vi.exp vi
@@ -225,14 +226,15 @@ initialization. Then there should be an ANSI escape sequence that asks xterm to
 give its current configuration or its capabilities. Then xterm responds with
 `^[\[2;2R^[\[>85;95;0c^[\]10;rgb:5 ...`. Initialization continues, and then vi
 renders its interface using commands which jump to the beginning of each line
-and then output its famous `~` symbol indicating a non-existing line.
+and then output its famous `~` symbol visualizing a non-existing line.
 
 ```
 ^[\[3;1H~ ...
 ^[\[4;1H~ ...
 ```
 
-Let's consult [xterm's user manual](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s)
+Let's consult [xterm's user
+manual](https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h3-Functions-using-CSI-_-ordered-by-the-final-character_s)
 to find out the meaning of ANSI escape sequences emitted by vim:
 
 | Sequence      | Meaning                                                                        | Source of info |
@@ -265,24 +267,25 @@ to find out the meaning of ANSI escape sequences emitted by vim:
 | `^[[38;5;12m` | Character Attributes (SGR) Set foreground color                                |                |
 | `~`           | plain text                                                                     |                |
 
-I wish there would be a tool that would create a table above automatically ¯\_(ツ)_/¯.
+I wish there would be a tool that would create a table above
+automatically ¯\_(ツ)_/¯.
 
 Some comments:
 * "Application Cursor Keys" and "Application Keypad" configure what xterm sends
   when the user presses arrow keys or keypad keys;
 * changing cursor position and character attributes should be self-explanatory;
-* bracketed paste cause xterm to wrap data inserted from an X clipboard into
-  `\ESC[200~` `\ESC[201~` so that the application can distinguish between keyboard input
-  and copy-paste from the clipboard;
-* "Alternate Screen Buffer" is a feature that helps vim to restore the screen after
-  it exists; it's common for tui apps to enable alternative screen buffer and
-  then disable it when they finish.
+* bracketed paste causes xterm to wrap data inserted from an X clipboard into
+  `\ESC[200~` `\ESC[201~` so that the application can distinguish between
+  keyboard input and copy-paste from the clipboard;
+* "Alternate Screen Buffer" is a feature that helps vim to restore the screen
+  after it exists; it's common for tui apps to enable alternative screen buffer
+  and then disable it when they finish.
 
-Existing apps are a useful source of information. Sometimes the easiest way to
+Existing apps are a useful source of information. Sometimes, the easiest way to
 answer your questions is to investigate the behavior or source code of an
-existing tool. Digging through ANSI escape codes might seem complicated but with
-practice, it quickly becomes easier. One also can consult source code of
-existing terminal emulators, one good example is recently created
+existing tool. Digging through ANSI escape codes might seem complicated, but
+with practice, it quickly becomes easier. One also can consult the source code
+of existing terminal emulators. One good example is recent
 [Alacritty](https://github.com/alacritty/alacritty/blob/master/alacritty_terminal/src/ansi.rs#L1085).
 
 ## Conclusion
@@ -296,5 +299,5 @@ tools. We also practiced analyzing the behavior of the terminal and command-line
 tools so that we can figure out how things work and why they don't work as
 expected.
 
-In the part 2, we will explore tty behavior. Stay tuned :) 
+In part 3, we will explore tty behavior. Stay tuned :)
 
