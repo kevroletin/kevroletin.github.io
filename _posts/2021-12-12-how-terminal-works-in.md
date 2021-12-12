@@ -1,10 +1,11 @@
 ---
 layout: post
 title:  "How terminal works. Part 1: Xterm, user input"
+date:   2021-12-12 00:00:00 +1000
 categories: terminal
 ---
 
-![]("/assets/how-terminal-works/img/terminal_and_shell.jpg")
+![]({{ "/assets/how-terminal-works/img/terminal_and_shell.jpg" | absolute_url }})
 
 * TOC
 {:toc}
