@@ -11,7 +11,7 @@ categories: terminal
 
 ## Motivation
 
-This blog series explains how modern terminals and command-line tools work. The main goal here is to learn by **experimenting**. I'll provide Linux tools to debug every component mentioned in the discussion. Our main focus is to discover **how** things work. For the explanation of **why** things work in a certain way, I encourage the reader to read excellent articles:
+This blog series explains how modern terminals and command-line tools work. The primary goal here is to learn by **experimenting**. I'll provide Linux tools to debug every component mentioned in the discussion. Our focus is to discover **how** things work. For the explanation of **why** things work in a certain way, I encourage the reader to read excellent articles:
 
 * [The TTY demystified](https://www.linusakesson.net/programming/tty/)
 * [A Brief Introduction to termios](https://blog.nelhage.com/2009/12/a-brief-introduction-to-termios/)
@@ -25,7 +25,7 @@ Please note that I talk solely about Linux (because that is what I use), but man
 
 I've chosen the "learn by experimenting" approach because that's how I've learned about command-line tools. In my case, there was no single "click" moment after which I've understood all the things. Instead, I've learned through a never-ending process of building mental models, proving them to be wrong, and then adjusting those models to reflect new knowledge.
 
-Target audience are people who wants to start working on command line tools.
+Target audience are people who want to start working on command-line tools.
 
 The series consists of 4 parts. The first two parts discuss how xterm work. Parts 3 and 4 talk about different features of tty:
 
@@ -36,15 +36,15 @@ The series consists of 4 parts. The first two parts discuss how xterm work. Part
 
 ## Introduction
 
-Let's start the discussion with an **inaccurate** diagram that demonstrates a general use case for working with a command-line shell:
+Let's start the discussion with an **inaccurate** diagram that shows a general use case for working with a command-line shell:
 
 ```
            (1)   (2)   (3)
 user <---> xterm <---> bash 
-                  
+
 ```
 
-The user interacts with bash using a terminal emulator xterm. xterm is a GUI app that receives "key pressed" events and writes corresponding characters into a bidirectional filehandle (2). Bash reads those characters from (2) does something and sends the output back to xterm, using the same filehandle (2). Xterm reads bash outputs from (2) and renders them on the screen. (2) is "just a file" and this communication scheme looks pretty simple.
+The user interacts with bash using a terminal emulator xterm. xterm is a GUI app that receives "key pressed" events and writes corresponding characters into a bidirectional filehandle (2). Bash reads those characters from (2) does something and sends the output back to xterm, using the same filehandle (2). Xterm reads, bash outputs from (2) and renders them on the screen. (2) is "just a file" and this communication scheme looks pretty simple.
 
 If the user asks bash to execute a command, let's say `cat log.txt` then bash spawns `cat` which uses the same filehandle to send its output to xterm:
 
@@ -52,15 +52,16 @@ If the user asks bash to execute a command, let's say `cat log.txt` then bash sp
                        bash
            (1)   (2)     (4)
 user <---> xterm <--->   cat
-                  
+
 ```
 
 Again, pretty simple. In this unrealistic model (2) is "just a file" xterm and cat exchange plain text.
 
-In reality, things are slightly more complicated. The simple scheme of "using a bidirectional filehandle to exchange plain text" is extended with more features to provide a better user experience. Additional features are:
+In reality, things are slightly more complicated. Evolution extended the simple scheme of "using a bidirectional filehandle to exchange plain text" to implement additional features:
+
 1. TUI interfaces. The terminal can draw characters at an arbitrary part of the screen; command-line tools can ask capabilities of the terminal and can handle window resize;
 2. job control. Shell organizes processes into logical groups which can be paused/resumed or stopped altogether;
-3. access control for the filehandle (2). Bash has a feature to spawn background processes, this might lead to a situation when two processes are writing their output into the same filehandle (2) at the same time; there should be some access control mechanism;
+3. access control for the filehandle (2). Bash has a feature to spawn background processes. This might lead to a situation when two processes are writing their output into the same filehandle (2) at the same time; there should be some access control mechanism;
 4. "fixing" stupid tools which believe that the terminal is just a file with plain text; so that those tools look and feel better.
 
 ## User input
@@ -69,16 +70,16 @@ Requirement above and 50 years of history led us to this scheme:
 
 ```
            (1)         (2)       (3)
-user <---> xterm <---> tty <---> bash 
+user <---> xterm <---> tty <---> bash
 
 ```
 
-The first thing to notice is a "middle man" **tty** between xterm and bash. We will discuss tty in detail in parts 3 and 4. For now, we will just say that:
+The first thing to notice is a "middle man" **tty** between xterm and bash. We will discuss tty in parts 3 and 4. For now, we will just say that:
 * tty sits between xterm and bash and passes data from one to the other in both directions;
-* tty can be configured and depending on its configuration, it will "slightly" alter data it receives from one side before passing to the other.
+* depending on its configuration, tty changes data it receives from one side before passing to the other;
 * there is command `stty raw -echo -isig` which configures tty to pass data "as is without modification".
-  
-Using `stty raw -echo -isig` to disable most effects of tty is our main strategy to explore how xterm works. Until the part 3, we will ignore the existence of tty and will concentrate on exploring xterm's behavior.
+
+Using `stty raw -echo -isig` to disable most effects of tty is our primary strategy to explore how xterm works. Until the part 3, we will ignore the existence of tty and will concentrate on exploring xterm's behavio
 
 Let's start by discussing a bi-directional link between a user and xterm. Converting scancodes that come from a keyboard into GUI events happens in two steps. First, Linux handles hardware events and turns them into keycodes that can be read by userland (using device descriptors like `/dev/input/by-id/usb-2.4G_2.4G_Wireless_Device-event-kbd`). Second, Windows system (X or Wayland) reads Linux keycodes and converts them into its own keycodes, and also assigns a keysym (i.e. a Unicode character). To check how it works, one can use:
 
@@ -88,12 +89,12 @@ Let's start by discussing a bi-directional link between a user and xterm. Conver
 For example, when I press the `q` button on my keyboard, depending on my keyboard layout I see:
 * showkey: keycode 16
 * xev: keycode 24 (keysym 0x71, q)
-* xev: keycode 24 (keysym 0x6ca, Cyrillic_shorti) 
+* xev: keycode 24 (keysym 0x6ca, Cyrillic_shorti)
 
-xterm receives keypress events and write data into tty(2). It
-* encodes printable characters using configured encoding (most probably UTF-8);
-* on receiving some key combinations it executes actions such as copy-paste from clipboard;
-* encodes other key combinations and non-printable characters (such as arrow keys) using ANSI escape sequences (see post #2 for more details about ANSI sequences).
+xterm receives keypress events and writes data into tty(2):
+* it encodes printable characters using configured encoding (most probably UTF-8);
+* on receiving some key combinations, it executes actions such as copy-paste from clipboard;
+* it encodes other key combinations and non-printable characters (such as arrow keys) using ANSI escape sequences (see post #2 for more details about ANSI sequences).
 
 So converting key presses into data written into tty(2) happens in 3 steps, two involving kernel and one in xterm. Now let's figure out what xterm sends into tty after all those 3 steps. There are two strategies we can use to accomplish this task:
 
@@ -105,9 +106,9 @@ So converting key presses into data written into tty(2) happens in 3 steps, two 
 
 ### strace
 
-Let's start with `strace` because, in my opinion, it's quite a practical approach. In your daily life, if you'll get stuck with misbehaving command-line tools, you can attach to a running process and observe what your terminal is writing into filehandles and what your shell reads. You don't need to restart running programs to figure out what is going on.
+Let's start with `strace` because it's quite a practical approach. In your daily life, if you'll get stuck with misbehaving command-line tools, you can attach to a running process and observe what your terminal is writing into filehandles and what your shell reads. You don't need to restart running programs to figure out what is going on.
 
-First, a little helper to find out PID of a terminal by clicking it with a computer mouse (for users of XWindows system):
+First, here is a little helper to find out PID of a terminal by clicking it with a computer mouse (for users of XWindows system):
 
 ```
 xprop | grep '_NET_WM_PID(CARDINAL)' | awk '{print $3}'
@@ -133,7 +134,7 @@ read(4, "w", 4096)                      = 1
 write(4, "e", 1)                        = 1
  | 00000  65                                                e                |
 read(4, "e", 4096)                      = 1
- | 00000  65 
+ | 00000  65
 ```
 
 That makes sense. xterm sends (writes) `q`. tty+bash echoes back `q` to display it so that the user can see what he/she entered. Then a sequence `we` follows the same pattern. Now, I'll try arrow keys: the left arrow and then the right arrow:
@@ -168,10 +169,10 @@ read(0, "[", 1)                         = 1
 read(0, "D", 1)                         = 1
  | 00000  44                                                D                |
 write(2, "\10", 1)                      = 1
- | 00000  08  
+ | 00000  08
 ```
 
-I've promised to ignore tty for a while, but just to demonstrate why it might be useful to strace both a terminal and bash, let's experiment. Let's execute `cat -` command and observe in real-time what xterm is sending to tty and what `cat` receives.
+I've promised to ignore tty for a while, but just to show why it might be useful to strace both a terminal and bash, let's experiment. Let's execute `cat -` command and observe in real-time what xterm is sending to tty and what `cat` receives.
 
 First, let's get the PID of a shell and then execute `cat`
 
@@ -191,14 +192,14 @@ ps --ppid 10519
 10560 pts/5    00:00:00 cat
 ```
 
-On my system, I am observing that xterm writes characters one by one immediately after I've pressed a keyboard button. Yet `cat` receives the whole line only after I've pressed Enter. Moreover, I can use the Backspace key to erase previously entered characters, which is relatively complicated logic. This logic is part of what tty is capable of.
+In my system, experiment shows that xterm writes characters one by one immediately after I've pressed a keyboard button. Yet `cat` receives the entire line only after I've pressed Enter. I can use the Backspace key to erase previously entered characters, which is relatively complicated logic. This logic is part of what tty is capable of.
 
 ```
 read(0, "qwe\33[D\33[C\n", 131072)      = 10
  | 00000  71 77 65 1b 5b 44 1b 5b  43 0a                    qwe.[D.[C.       |
 ```
 
-We will discuss tty in detail in the 2nd part. For now, let's just enjoy success of our debugging approach: we've just observed what *exactly* xterm and bash send to each other and how tty (which sits in the middle) can alter data before sending it to a consumer. The big limitation of such an approach is that reading sequences like `\33[D\33[C\n` requires a certain patience and might be quite hard if applications output a lot of data ¯\_(ツ)_/¯.
+We will discuss tty in the 2nd part. For now, let's just enjoy the success of our debugging approach: we've just observed what *exactly* xterm and bash send to each other and how tty (which sits in the middle) can alter data before sending it to a consumer. The big limitation of such an approach is that reading sequences like `\33[D\33[C\n` require a certain patience and might be quite hard if applications output a lot of data ¯\_(ツ)_/¯.
 
 ### Printing non-printable
 
@@ -231,7 +232,7 @@ printf "\x1b" > data.txt
   console.dir( fs.readFileSync('/tmp/data.txt', 'utf8') )
   ```
 
-To make things more confusing, some popular programming languages support syntax for embedding non-printable characters into string literals, but doesn't provide easily accessible function to convert a string into the same notation. For example, using the C programming language, I can easily make a string containing ESC character:
+To make things more confusing, some popular programming languages support syntax for embedding non-printable characters into string literals, but don't provide easily accessible function to convert a string into the same notation. For example, using the C programming language, I can easily make a string containing ESC character:
 
 ```
 char* str = "\x1b";
@@ -257,7 +258,7 @@ int main() {
 }
 ```
 
-The moral here is that different tools visualize non-printable characters differently. To make things less confusing it's helpful to train your eye to recognize magic strings `^[`, `\ESC`, `ESC`, `esc`, `1b`, `\x1b`, `0x1b`, `\u001b`, `33`, `27`. Also, it's helpful to choose tools that you can understand even under stress.
+The moral here is that different tools visualize non-printable characters differently. To make things less confusing it's helpful to train your eye to recognize magic strings `^[`, `\ESC`, `ESC`, `esc`, `1b`, `\x1b`, `0x1b`, `\u001b`, `33`, `27`. Also, it's helpful to choose tools you can understand even under stress.
 
 ### stty raw -echo -isig
 
@@ -280,7 +281,7 @@ It might be cool to visualize the same data in real-time. One can use this bash 
 stty sane -isig -echo -icanon; while true; do od -N 1 -ax -; done
 ```
 
-Or convert `man ascii` into a [small c program](/assets/how-terminal-works/display_ascii.c). It executes `stty raw -echo` on startup, so that tty doesn't modify terminal output and hence the tool demonstrates what terminal sends into tty.
+Or convert `man ascii` into a [small c program](/assets/how-terminal-works/display_ascii.c). It executes `stty raw -echo` on startup, so that tty doesn't change terminal output and hence the tool shows what terminal sends into tty.
 
 Pressing a sequence of `a`, `1`, `Ctrl+d`, `Ctrl+l` gives:
 
@@ -307,7 +308,7 @@ EOT (end of transmission)
 
 which is the same as `Ctrl+Alt+d`, Shift is just ignored.
 
-That behavior of xterm is **not** set in stone and can be configured in a terminal-dependent way. Depending on its configuration, xterm would send different characters or escape sequences in response to `Ctrl+Alt+Shift` combination. Here is the discussion about xterm [modified keys](https://invisible-island.net/xterm/modified-keys.html).
+That behavior of xterm is **not** set in stone and it is configurable in a terminal-dependent way. Depending on its configuration, xterm might send different things in response to `Ctrl+Alt+Shift` combination. Here is the discussion about xterm [modified keys](https://invisible-island.net/xterm/modified-keys.html).
 
 ### UTF-8
 
@@ -318,7 +319,7 @@ Utf8 has a few nice features which I didn't appreciate enough until recently:
    * you'll be able to recover from the error by discarding bytes of a broken character and figure out the beginning of the next valid character.
 2. ASCII characters (including control character) are valid one-byte Utf8 encoded characters.
 
-Combined (1) and (2) give us a nice property that control characters will never appear as part of multi-byte characters. I.e. python code below is correct for any string consisting of multi-byte Utf8 characters:
+Combined (1) and (2) give us a nice property that control characters will never appear as part of multi-byte characters. I.e. python code below is correct for any string comprising multi-byte Utf8 characters:
 
 ```
 "编程很有趣".find("\n") == -1
@@ -333,7 +334,7 @@ Let's understand why this is the case. `编程很有趣` is encoded using 15 byt
 
 All these numbers are greater than 127 Dec. But all ASCII characters (including control characters) are lesser or equal to 127 Dec. So it's safe to search for single-byte ASCII characters in Utf8 strings without decoding them because all bytes of every valid multi-byte character is guaranteed to be greater than 127 Dec.
 
-Error recovery is possible and it works surprisingly simple. In binary notation all ASCII characters start with leading `0`, all bytes of multi-byte characters start with `1`. In addition, for multi-byte characters:
+Error recovery is possible, and it works surprisingly simple. In binary notation, all ASCII characters start with leading `0`, all bytes of multi-byte characters start with `1`. In addition, for multi-byte characters:
 * only the first byte of a character can start with `11`;
 * all continuation bytes (bytes 2, 3, 4) start with `10`.
 
@@ -366,9 +367,8 @@ Each byte starts with `1` indicating that it's a part of a multi-byte character.
 
 ## Conclusion
 
-Using strace and by disabling tty features, we've explored how keyboard input from users reaches command-line tools. We also saw that xterm might send non-printable characters and different tools visualize non-printable characters differently. We've improved our mental resilience by getting accustomed to different notations and by trying different tools for visualizing control characters. We also said a few words about Utf8 encoding which is the most widely used Unicode encoding nowadays.
+Using strace and by disabling tty features, we've explored how keyboard input from users reaches command-line tools. We also saw that xterm might send non-printable characters and different tools visualize non-printable characters differently. Also, we've improved our mental resilience by getting accustomed to different notations and by trying different tools for visualizing control characters. Finally, we said a few words about Utf8 encoding, which is the most widely used Unicode encoding nowadays.
 
-In this blog post we've discussed how xterm handles user input. In the next post will discuss how xterm visualizes output of CLI tools.
+In this blog, post we've discussed how xterm handles user input. Next post will discuss how xterm visualizes the output of CLI tools.
 
-Stay tuned :) 
-
+Stay tuned :)
