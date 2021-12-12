@@ -1,10 +1,11 @@
 ---
 layout: post
 title:  "How terminal works. Part 2: Xterm, CLI tools output"
+date:   2021-12-12 00:00:00 +1000
 categories: terminal
 ---
 
-![]("/assets/how-terminal-works/img/debug.jpg")
+![]({{ "/assets/how-terminal-works/img/debug.jpg" | absolute_url }})
 
 * TOC
 {:toc}
@@ -290,14 +291,10 @@ of existing terminal emulators. One good example is recent
 
 ## Conclusion
 
-With disabled tty features, we've explored how keyboard input from users reaches
-command-line tools. Then we've explored that the output of command-line tools is
-a sequence of instructions for a terminal. We also saw that different tools
-visualize non-printable characters differently, and we've improved our mental
-resilience by getting accustomed to different notations and by trying different
-tools. We also practiced analyzing the behavior of the terminal and command-line
-tools so that we can figure out how things work and why they don't work as
-expected.
+To explore how xterm visualizes bash output, we’ve created a small drawing
+program. Then to dig deeper and to understand non-trivial output with ANSI
+escape sequences, we’ve manually explored the output of the `vi` command. This
+practice should give a basic understanding of how xterm visualizes bash output.
 
 In part 3, we will explore tty behavior. Stay tuned :)
 
