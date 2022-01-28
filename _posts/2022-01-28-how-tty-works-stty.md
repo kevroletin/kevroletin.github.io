@@ -1,10 +1,11 @@
 ---
 layout: post
 title:  "How terminal works. Part 3: pty, stty"
+date:   2022-01-28 00:00:00 +1000
 categories: terminal
 ---
 
-![]("/assets/how-terminal-works/img/tty_in_the_middle.jpg")
+![]({{ "/assets/how-terminal-works/img/tty_in_the_middle.jpg" | absolute_url }})
 
 * TOC
 {:toc}
