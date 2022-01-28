@@ -18,11 +18,26 @@ categories: terminal
 3. and later it was extended to refer to any serial-port style device
    [\[ref\]](https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch18.html).
 
-"serial-port style device" means that the device driver provides an interface to a userland that looks like a serial-port device: a filehandle together with certain supported `ioctl` calls. Such a device doesn't necessarily use a physical serial port, instead, it might use the network stack or something else [\[ref\]](https://en.wikipedia.org/wiki/Line_discipline).
+"serial-port style device" means that the device driver provides an interface to
+a userland that looks like a serial-port device: a filehandle together with
+certain supported `ioctl` calls. Such a device doesn't necessarily use a
+physical serial port, instead, it might use the network stack or something else
+[\[ref\]](https://en.wikipedia.org/wiki/Line_discipline).
 
-Linux kernel provides building blocks for creating new tty drivers: tty core and several existing tty **line disciplines**. Line discipline is a piece of logic that **transforms** sequence of bytes into some other structured representation. For example, it might accumulate input into PPP packets (which is useful for dial-up Internet connection). Or it might transform a sequence of ASCII characters into a sequence of lines of ASCII characters.
+Linux kernel provides building blocks for creating new tty drivers: tty core and
+several existing tty **line disciplines**. Line discipline is a piece of logic
+that **transforms** sequence of bytes into some other structured representation.
+For example, it might accumulate input into PPP packets (which is useful for
+dial-up Internet connection). Or it might transform a sequence of ASCII
+characters into a sequence of lines of ASCII characters.
 
-Here we aren't interested in any serial-port style devices; instead, we are discussing connections to a terminal. In case of a connection to a physical terminal, tty driver would expose to a userland a filehandle which `bash` would use to receive user input and to send its output. For consistency with the next diagram let's call that filehandle a slave filehandle *(note, this is a simplification, one terminal represent several logical "seats", see [multiseat](https://www.freedesktop.org/wiki/Software/systemd/multiseat/))*:
+Here we aren't interested in any serial-port style devices; instead, we are
+discussing connections to a terminal. In case of a connection to a physical
+terminal, tty driver would expose to a userland a filehandle which `bash` would
+use to receive user input and to send its output. For consistency with the next
+diagram let's call that filehandle a slave filehandle *(note, this is a
+simplification, one terminal represent several logical "seats", see
+[multiseat](https://www.freedesktop.org/wiki/Software/systemd/multiseat/))*:
 
 ```
           Terminal            Computer
@@ -32,7 +47,12 @@ Here we aren't interested in any serial-port style devices; instead, we are disc
            xxxxxxx            +------+
 ```
 
-To support software terminal emulators similarly to hardware terminals, Linux implements pseudo terminals. In the previous diagram, the hardware terminal was receiving bash output via a physical connection. In the case of a pseudo-terminal, Linux creates one more filehandle to send data to xterm. That way xterm runs on the same machine and reads bash output via a filehandle; the entire scheme looks like that:
+To support software terminal emulators similarly to hardware terminals, Linux
+implements pseudo terminals. In the previous diagram, the hardware terminal was
+receiving bash output via a physical connection. In the case of a
+pseudo-terminal, Linux creates one more filehandle to send data to xterm. That
+way xterm runs on the same machine and reads bash output via a filehandle; the
+entire scheme looks like that:
 
 ```
 (1)           (2)         (3)
@@ -40,20 +60,33 @@ xterm <-----> tty <-----> bash
       master      slave
 ```
 
-Master filehandle is referred to as `ptm`, slave filehandle is `pts`. The abbreviation for pseudo-terminal is  `pty` (see `man pty`). A mnemonic to remember that bash uses a slave filehandle is that bash receives commands from a user, hence it’s being controlled and it’s a slave. Xterm sends user commands, hence it’s a master.
+Master filehandle is referred to as `ptm`, slave filehandle is `pts`. The
+abbreviation for pseudo-terminal is `pty` (see `man pty`). A mnemonic to
+remember that bash uses a slave filehandle is that bash receives commands from a
+user, hence it’s being controlled and it’s a slave. Xterm sends user commands,
+hence it’s a master.
 
-Back to line disciplines. Line discipline used for pseudoterminals is [drivers/tty/n_tty.c](https://github.com/torvalds/linux/blob/f40ddce88593482919761f74910f42f4b84c004b/drivers/tty/n_tty.c). It has many settings which we are going to discuss soon. (TODO: check).
+Back to line disciplines. Line discipline used for pseudoterminals is
+[drivers/tty/n_tty.c](https://github.com/torvalds/linux/blob/f40ddce88593482919761f74910f42f4b84c004b/drivers/tty/n_tty.c).
+It has many settings which we are going to discuss soon. (TODO: check).
 
 ### Session, background/foreground process groups
 
-Normally, bash and all its children (the processes it spawned) are part of the same session (associated with the same `tty`). Bash organizes newly spawned processes into process groups session. While executing commands, bash marks a single process group as a foreground process group of the session.
+Normally, bash and all its children (the processes it spawned) are part of the
+same session (associated with the same `tty`). Bash organizes newly spawned
+processes into process groups session. While executing commands, bash marks a
+single process group as a foreground process group of the session.
 
 session, process group, foreground process group
 * are configured using system calls (so both bash and tty know about them);
 * organize processes so that
-* with help of tty bash can implement job control, keyboard shortcuts to interrupt/suspend a running command, and it terminates children when a terminal gets closed (with some nuances).
+* with help of tty bash can implement job control, keyboard shortcuts to
+  interrupt/suspend a running command, and it terminates children when a
+  terminal gets closed (with some nuances).
 
-Here is a simple test to show how bash organizes processes into process groups. We create a background job `yes | sleep 1h` which consists of two processes `yes` and `sleep`. Then we execute `ps` which runs in the foreground:
+Here is a simple test to show how bash organizes processes into process groups.
+We create a background job `yes | sleep 1h` which consists of two processes
+`yes` and `sleep`. Then we execute `ps` which runs in the foreground:
 
 ```
 yes | sleep 1h & 
@@ -68,20 +101,32 @@ S    pts/4     6545  6740  6741   sleep
 R+   pts/4     6545  6769  6769   ps
 ```
 
-Notice that all processes run in the same session and share the same tty. `yes` and `sleep` share the same process group. `ps` is marked with `+` which means "is in the foreground process group".
+Notice that all processes run in the same session and share the same tty. `yes`
+and `sleep` share the same process group. `ps` is marked with `+` which means
+"is in the foreground process group".
 
 Note that the term "job" is a synonym for a process group (see `man credentials`).
 
-We will discuss sessions and process groups in more detail later. But that brief introduction should be enough to understand tty settings that we will discuss soon.
+We will discuss sessions and process groups in more detail later. But that brief
+introduction should be enough to understand tty settings that we will discuss
+soon.
 
 ## Features configurable by stty
 
-In Part 1, we've already discovered the existence of tty and observed some of its features. Now let's recall what we've learned so far:
+In Part 1, we've already discovered the existence of tty and observed some of
+its features. Now let's recall what we've learned so far:
 
-1. tty passes data from xterm to bash in both directions; we can configure tty, and depending on its configuration, it will "slightly" alter data it receives from one side before passing to the other side;
-2. besides passing data through filehandles, tty also generates signals; again, delivering signals is configurable logic; it might work differently depending on tty's configuration and depending on how processes are organized into logical groups.
+1. tty passes data from xterm to bash in both directions; we can configure tty,
+   and depending on its configuration, it will "slightly" alter data it receives
+   from one side before passing to the other side;
+2. besides passing data through filehandles, tty also generates signals; again,
+   delivering signals is configurable logic; it might work differently depending
+   on tty's configuration and depending on how processes are organized into
+   logical groups.
 
-I'll split tty's features into two parts depending on whether we can configure them using the `stty` tool. To explore features that cannot be configured using `stty` we will write C code.
+I'll split tty's features into two parts depending on whether we can configure
+them using the `stty` tool. To explore features that cannot be configured using
+`stty` we will write C code.
 
 `man stty` gives us 7 sections
 
@@ -93,15 +138,24 @@ I'll split tty's features into two parts depending on whether we can configure t
 1. Local settings
 1. Combination settings
 
-Skipping "Combination settings" gives us 89 settings. 11 of them are synonyms, leaving us 78 settings. I've counted 34 settings that are "not relevant to the modern world" or seem to be not relevant to software terminal emulators. This leaves us 44 options to discuss. I've organized these 44 options into 7 groups based on features they control.
+Skipping "Combination settings" gives us 89 settings. 11 of them are synonyms,
+leaving us 78 settings. I've counted 34 settings that are "not relevant to the
+modern world" or seem to be not relevant to software terminal emulators. This
+leaves us 44 options to discuss. I've organized these 44 options into 7 groups
+based on features they control.
 
 ### Outdated features
 
 * flow control and parity check
 
-  These features make sense only for physical serial transmission lines. Serial ports are still in use, for example, in embedded software engineering and embedded devices might implement flow control. But it's not relevant for pseudo terminals. I didn't check all the features, but many of them simply do nothing in the case of a pseudo-terminal.
+  These features make sense only for physical serial transmission lines. Serial
+  ports are still in use, for example, in embedded software engineering and
+  embedded devices might implement flow control. But it's not relevant for
+  pseudo terminals. I didn't check all the features, but many of them simply do
+  nothing in the case of a pseudo-terminal.
 
-  The only relevant feature from "Control settings" is the `hup` setting (send a hangup signal when the last process closes the tty).
+  The only relevant feature from "Control settings" is the `hup` setting (send a
+  hangup signal when the last process closes the tty).
 
 * delays (bsN, crN, ffN, nlN)
 
@@ -121,29 +175,44 @@ More details are in [this table](/assets/how-tty-works/stty_summary.org).
 
 ### Relevant features
 
-We can further split the remaining 46 settings into several groups. It's unnecessary to study all the options, but skimming through all the groups is useful to understand that tty has a finite amount of features.
+We can further split the remaining 46 settings into several groups. It's
+unnecessary to study all the options, but skimming through all the groups is
+useful to understand that tty has a finite amount of features.
 
-The entire list can be found in the last section of this post. Here I'll just discuss the groups that I've chosen to organize all available options.
+The entire list can be found in the last section of this post. Here I'll just
+discuss the groups that I've chosen to organize all available options.
 
-* input processing 
+* input processing
 
-  tty might ignore some characters which come from the master filehandle (from xterm), or convert them into other characters;
+  tty might ignore some characters which come from the master filehandle (from
+  xterm), or convert them into other characters;
 
 * output processing
 
-  tty can convert certain characters which come from the slave filehandle (from bash) into some other character sequences (`"\n" -> "\n\r"`, etc.);
+  tty can convert certain characters which come from the slave filehandle (from
+  bash) into some other character sequences (`"\n" -> "\n\r"`, etc.);
 
 * echo
 
-  tty sends data that came from xterm back to xterm so that the user can see what he/she is typing; note that echoing control characters in case of enabled line editor is a more complicated task than just sending the same characters back;
+  tty sends data that came from xterm back to xterm so that the user can see
+  what he/she is typing; note that echoing control characters in case of enabled
+  line editor is a more complicated task than just sending the same characters
+  back;
 
 * line editor feature
 
-  the user can enter text while using Backspace, Ctrl+w, Ctrl+u to remove the last character, word, or the whole line; to implement the feature tty buffers one line of input and sends it to bash only after receiving a return character "\r"; if echo and line editing are enabled together, tty hides most of the interaction with a user from bash but it actively interacts with xterm to implement line editing;
+  the user can enter text while using Backspace, Ctrl+w, Ctrl+u to remove the
+  last character, word, or the whole line; to implement the feature tty buffers
+  one line of input and sends it to bash only after receiving a return character
+  "\r"; if echo and line editing are enabled together, tty hides most of the
+  interaction with a user from bash but it actively interacts with xterm to
+  implement line editing;
 
 * generating signals
 
-  common (but configurable) behavior is that pressing Ctrl+C will cause tty to send SIGINT, closing xterm will eventually cause certain programs to receive SIGHUP; programs receive sigWINCH signal after tty got resized;
+  common (but configurable) behavior is that pressing Ctrl+C will cause tty to
+  send SIGINT, closing xterm will eventually cause certain programs to receive
+  SIGHUP; programs receive sigWINCH signal after tty got resized;
 
 * size
 
@@ -157,7 +226,13 @@ The most useful combinations are:
 
 * `stty raw -echo -isig` - make pty pass characters "as is".
 
-Be aware that bash changes tty setting before executing commands and restores the previous setting after the command has finished. We can easily observe that by using `watch stty ...`. Open two xterm windows and get the tty path in the first window. Start watching settings of the first tty in another window using `watch stty -a -F <pts>` command. Execute something like `cat -` in the first terminal. Check new tty settings. Close `cat` with Ctrl+d and note that the settings have changed back.
+Be aware that bash changes tty setting before executing commands and restores
+the previous setting after the command has finished. We can easily observe that
+by using `watch stty ...`. Open two xterm windows and get the tty path in the
+first window. Start watching settings of the first tty in another window using
+`watch stty -a -F <pts>` command. Execute something like `cat -` in the first
+terminal. Check new tty settings. Close `cat` with Ctrl+d and note that the
+settings have changed back.
 
 ```
 xterm1               | xterm2
@@ -179,22 +254,31 @@ Equipped with the knowledge of tty options, let's observe:
 
 ### Line editor
 
-We've already observed that tty can allow you to edit the current input line and to delete a previous character, or a word, or the entire line. Let's quickly repeat the experiment from Part 1, but instead of `strace` let's play with bash scripts. We'll use one xterm window to receive input and the other to visualize what tty is sending to our bash script. Open two xterm windows, and in the first xterm:
+We've already observed that tty can allow you to edit the current input line and
+to delete a previous character, or a word, or the entire line. Let's quickly
+repeat the experiment from Part 1, but instead of `strace` let's play with bash
+scripts. We'll use one xterm window to receive input and the other to visualize
+what tty is sending to our bash script. Open two xterm windows, and in the first
+xterm:
 
 ```
 mkfifo /tmp/out.pipe
 dd bs=1 of=/tmp/out.pipe
 ```
 
-Execute the following line using the second xterm. The while loop with `dd` is my attempt to make `od` read characters one by one (asking it directly using `od -w1` option gives an error):
+Execute the following line using the second xterm. The while loop with `dd` is
+my attempt to make `od` read characters one by one (asking it directly using `od
+-w1` option gives an error):
 
 ```
 (while true; do dd count=1 bs=1 2>/dev/null | od -ax; done) < /tmp/out.pipe
 ```
 
-Now you can enter something in the xterm1. In the other xterm window, you can observe in real-time what tty is sending to a script.
+Now you can enter something in the xterm1. In the other xterm window, you can
+observe in real-time what tty is sending to a script.
 
-Execute `stty raw` before calling `dd` in the xterm1 and observe that now tty sends data to bash character by character:
+Execute `stty raw` before calling `dd` in the xterm1 and observe that now tty
+sends data to bash character by character:
 
 ```
 stty raw; dd bs=1 of=/tmp/out.pipe
@@ -222,11 +306,17 @@ line1
                sh-4.4$ 
 ```
 
-Using tools from the Part 1 we can easily discover that in the first test case xterm receives `\r\nline1\r\nline2\r\nline3\r\n` and in the second test case it receives `\nline1\nline2\nline3\n`. The difference is that `\n` was replaced by '\r\n' in the first test case. This behavior is configured by `onlcr` setting (translate newline to carriage return-newline).
+Using tools from the Part 1 we can easily discover that in the first test case
+xterm receives `\r\nline1\r\nline2\r\nline3\r\n` and in the second test case it
+receives `\nline1\nline2\nline3\n`. The difference is that `\n` was replaced by
+'\r\n' in the first test case. This behavior is configured by `onlcr` setting
+(translate newline to carriage return-newline).
 
 ### Observing signals
 
-We are going to execute two bash commands: one in the background, one in the foreground. And then we will use `strace` to observe which signals reach both processes:
+We are going to execute two bash commands: one in the background, one in the
+foreground. And then we will use `strace` to observe which signals reach both
+processes:
 
 ```
 echo $$
@@ -271,7 +361,8 @@ strace -f -e 'trace=!all' -p 19062
      --- stopped by SIGTSTP ---
      ```
 
-     After that bash appends the process to a list of `jobs`. `%2` resumes a stopped the background process by sending the `SIGCONT` signal.
+     After that bash appends the process to a list of `jobs`. `%2` resumes a
+     stopped the background process by sending the `SIGCONT` signal.
 
    * Ctrl+c 
 
@@ -288,7 +379,8 @@ strace -f -e 'trace=!all' -p 19062
 
 4. Tty access control
 
-   When a process from a background process group attempts to read from tty the whole process group receives `SIGTTIN`:
+   When a process from a background process group attempts to read from tty the
+   whole process group receives `SIGTTIN`:
 
    ```
     strace -e 'trace=!all' dd bs=1 &
@@ -297,7 +389,8 @@ strace -f -e 'trace=!all' -p 19062
    --- stopped by SIGTTIN ---
    ```
 
-   Similarly with configured `stty tostop` an attempt to output from a background process would cause the process group to receive `SIGTTOU` signal:
+   Similarly with configured `stty tostop` an attempt to output from a
+   background process would cause the process group to receive `SIGTTOU` signal:
 
    ```
    stty tostop; echo 123 &
@@ -310,7 +403,8 @@ strace -f -e 'trace=!all' -p 19062
    * hup   - send a hangup signal when the last process closes the tty
    * hupcl - same as hup
    
-   and skimming through [drivers/tty/tty_jobctrl.c](https://github.com/torvalds/linux/blob/f40ddce8/drivers/tty/tty_jobctrl.c#L269) gives an idea that pty sends `SIGHUP` to all processes within the session when either:
+   and skimming through [drivers/tty/tty_jobctrl.c](https://github.com/torvalds/linux/blob/f40ddce8/drivers/tty/tty_jobctrl.c#L269)
+   gives an idea that pty sends `SIGHUP` to all processes within the session when either:
    * bash closes master filehandle;
    * bash disassociates itself from a session by starting a new session.
 
@@ -324,11 +418,16 @@ strace -f -e 'trace=!all' -p 19062
    ...
    ```
 
-   However, `strace` shows that when I close xterm, all processes within the corresponding session receive `SIGHUP`. Tracing xterm, bash, and all background/foreground jobs reveal that:
+   However, `strace` shows that when I close xterm, all processes within the
+   corresponding session receive `SIGHUP`. Tracing xterm, bash, and all
+   background/foreground jobs reveal that:
    * when xterm exits it sends `SIGHUP` to bash;
    * when bash receives `SIGHUP` it terminates its children by using the same signal.
    
-   Hence, in practice, delivery of the `SIGHUP` signal depends on the behavior of a command-line shell such as bash. Some experimentation reveals that, for example, `zsh` has a slightly different behavior and it doesn't send `SIGHUP` to running background jobs. For example, in zsh
+   Hence, in practice, delivery of the `SIGHUP` signal depends on the behavior
+   of a command-line shell such as bash. Some experimentation reveals that, for
+   example, `zsh` has a slightly different behavior and it doesn't send `SIGHUP`
+   to running background jobs. For example, in zsh
 
    ```
    sleep 1h &
@@ -338,15 +437,22 @@ strace -f -e 'trace=!all' -p 19062
 
 ## Conclusion
 
-In this post, we've explained the origins of the term `tty` and relationships between `tty`, `pty`, and a serial port. We've talked a little about foreground/background process groups. And then we've experimented with tty's features. We also discovered that many stty's options don't apply to pty and hence can be safely ignored while working with terminal emulators.
+In this post, we've explained the origins of the term `tty` and relationships
+between `tty`, `pty`, and a serial port. We've talked a little about
+foreground/background process groups. And then we've experimented with tty's
+features. We also discovered that many stty's options don't apply to pty and
+hence can be safely ignored while working with terminal emulators.
 
-In the final Part 4 of this post series, we will continue exploring tty features by writing C code. We will develop a simple analog of a `script` utility with the goal of understanding sessions and process groups better. Stay tuned :)
+In the final Part 4 of this post series, we will continue exploring tty features
+by writing C code. We will develop a simple analog of a `script` utility with
+the goal of understanding sessions and process groups better. Stay tuned :)
 
 ## Appendix: relevant stty options by category
 
 * input processing 
 
-  tty replaces some input characters that come from the master filehandle with some other characters:
+  tty replaces some input characters that come from the master filehandle with
+  some other characters:
 
   * eof CHAR   - CHAR will send an end of file (terminate the input)
   * eol CHAR   - CHAR will end the line
@@ -364,7 +470,8 @@ In the final Part 4 of this post series, we will continue exploring tty features
 
   * opost  - postprocess output
 
-  rest of the options control whether tty should replace certain characters which come from slave filehandle with some other characters:
+  rest of the options control whether tty should replace certain characters
+  which come from slave filehandle with some other characters:
 
   * ocrnl    - translate carriage return to newline
   * olcuc    - translate lowercase characters to uppercase
@@ -402,7 +509,11 @@ In the final Part 4 of this post series, we will continue exploring tty features
 
   * iutf8 - assume input characters are UTF-8 encoded
   
-  `iutf8` instructs tty's line editor to erase characters correctly. So that it removes several bytes from its internal buffer when needed. This logic is [very simple](https://github.com/torvalds/linux/blob/f40ddce8/drivers/tty/n_tty.c#L393). More complicated features such as `iuclc` (translate uppercase characters to lowercase) don't work correctly with `iutf8`.
+  `iutf8` instructs tty's line editor to erase characters correctly. So that it
+  removes several bytes from its internal buffer when needed. This logic is
+  [very simple](https://github.com/torvalds/linux/blob/f40ddce8/drivers/tty/n_tty.c#L393).
+  More complicated features such as `iuclc` (translate uppercase characters to
+  lowercase) don't work correctly with `iutf8`.
 
 * access control
 
