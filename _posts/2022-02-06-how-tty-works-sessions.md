@@ -1,10 +1,11 @@
 ---
 layout: post
 title:  "How terminal works. Part 4: pty, sessions"
+date:   2022-02-06 00:00:00 +1000
 categories: terminal
 ---
 
-![]("/assets/how-terminal-works/img/terminal.jpg")
+![]({{ "/assets/how-terminal-works/img/terminal.jpg" | absolute_url }})
 
 * TOC
 {:toc}
@@ -335,8 +336,9 @@ In this section, we've written a tool similar to the `script` utility. It misses
 a few parts to be useful, but it helped us to discuss sessions, process groups,
 and to understand how CLI shells work.
 
-In this 3-post serious we've explored how terminal emulators, tty, and CLI tools
-work. CLI tools aren't the most in-demand skills of 2021, but it's an
+In this 4-post serious we've explored how terminal emulators, tty, and CLI tools
+work. CLI tools aren't the most in-demand skills of 2022, but it's an
 interesting area to explore in-depth. I had a lot of satisfaction from digging
-through old technologies and understanding how things are. I hope that while
-reading the text, you’ve also come up with questions and could answer them.
+through old technologies and understanding how things are. I hope you've also
+found something useful and interesting in the domain of command-line tools :)
+
