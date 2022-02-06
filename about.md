@@ -4,40 +4,29 @@ title: About
 permalink: /about/
 ---
 
-Hi, my name is Vasiliy Kevroletin and I am software developer from
-[Vladivostok](https://en.wikipedia.org/wiki/Vladivostok).
+Hi, my name is Vasiliy Kevroletin and I am a software developer from [Vladivostok](https://en.wikipedia.org/wiki/Vladivostok).
 
-My work experience is documented in the
-[CV](https://drive.google.com/file/d/1ffs4oQuzhzgH1Lt-NHzgdSKwe_Tec1jj/view?usp=sharing).
+Here is my CV to a position of [Haskell developer](https://drive.google.com/file/d/1crZT4AC5l23rtxN32xqbtVLDk3a85Xvh/view?usp=sharing).
+
+Past two years I haven't been employed. I've spend time relaxing from work, traveling (which was tricky during pandemic), improving my health and taking care of my family. I am grateful for taking such opportunity and I've learned many important lessons during that time.
 
 Throughout my career, I have been working on
 
-* [current] Blockchain projects using functional programming languages (Haskell, OCaml)
-* embedded projects using C++
+* **blockchain** projects using functional programming languages (**Haskell**, OCaml);
+* **embedded** projects using **C++**
   + stabilizing and optimizing C++ code for an embedded system
   + implementing libraries and services in C++ (with Lua) and Java (with Groovy)
-* CI system using Java/Groovy
+* **CI* system using *Java/Groovy**
   + developing a CI system for embedded projects
-  + managing a self-sufficient small team which was in charge of development,
-    support, and deployment of services for internal use.
+  + managing a self-sufficient small team which was in charge of development, support, and deployment of services for internal use.
 
-I want to write reliable software. Because of that aside from code development I
-often work on documentation and tests. Nowadays I learn functional programming
-and one day I'll learn some advanced type-level wizardry.
+In additional to coding, I had experience **managing a team**. 
 
-I am passionate about technologies, especially software development. I often
-spend my free time learning about interesting stuff like functional programming,
-programming languages or libraries.
+When it makes sense, I care about correctness, efficiency and complexity of software. Because of that, aside from code development, I often work on **documentation and tests**. Nowadays, I practice functional programming and I've learned some basics of formal verification. In recent years, I've shifted my perspective from thinking mostly about tools to thinking more about **people**; nowadays I think that right relationships between colleagues is as important as having right technical skills.
 
-Feel free to contact me. In addition to email, you also can easily reach me
+Feel free to contact me. Besides email, you also can easily reach me:
 
-* in the **telegram**, my nick is [kevroletin](https://web.telegram.org/#/im?p=@kevroletin);
-* via **twitter**, my nick is [kevroletin](https://twitter.com/kevroletin).
-
-### Pictures
-
-I draw pictures for this blog by myself *(unless stated otherwise)* using
-[Krita](https://krita.org/) painting program.
+* via **telegram**, my nick is [kevroletin](https://web.telegram.org/#/im?p=@kevroletin);
 
 ### Identity
 
