@@ -543,4 +543,4 @@ the goal of understanding sessions and process groups better. Stay tuned :)
 
   * cols N - tell the kernel that the terminal has N columns
   * rows N - tell the kernel that the terminal has N rows
-  * size   - print the number of rows and columns according to the kernel
+  * size   - print the number of rows and columns according to the kernel 
