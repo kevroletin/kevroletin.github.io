@@ -108,8 +108,8 @@ and `sleep` share the same process group. `ps` is marked with `+` which means
 
 Note that the term "job" is a synonym for a process group (see `man credentials`).
 
-We will discuss sessions and process groups in more detail later. But that brief
-introduction should be enough to understand tty settings that we will discuss
+We will discuss sessions and process groups in more details later. But that brief
+introduction should be enough to understand tty settings that we will be discussing
 soon.
 
 ## Features configurable by stty
@@ -409,7 +409,7 @@ strace -f -e 'trace=!all' -p 19062
    * bash closes master filehandle;
    * bash disassociates itself from a session by starting a new session.
 
-   However, on my system, I observe that bash disables `-hupcl` tty option and
+   However, on my system, I observed that bash disables `-hupcl` tty option and
    hence, it doesn't rely on this feature:
    
    ```
