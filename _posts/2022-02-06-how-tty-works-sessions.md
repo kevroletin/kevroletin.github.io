@@ -20,7 +20,7 @@ help us to:
 We will use the C programming language because it's a widely understood language
 and also because it's a primary system programming language on Linux.
 
-## script utility
+## Script utility
 
 We've already used the `script` tool in the previous post to capture the output
 of the `vim` command. Its main purpose is to intercept communication between
