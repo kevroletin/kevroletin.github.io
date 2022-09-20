@@ -17,7 +17,7 @@ about the practice.
 
 -   **Everyone has their own way of learning**. I am happy to teach you
     Russian/English using the approach of **your choice**. Please teach
-    me Mandarin/Japanese using the approach which works for me. We might
+    me Thai/Mandarin using the approach which works for me. We might
     learn differently and that's ok.
 
 -   **I want to learn how to speak**. That's why I ask to make audio or
@@ -26,10 +26,8 @@ about the practice.
     talking to me.
 
 -   **Strait to action**. If you are interested let's schedule a call. I
-    am in GMT+8 and I am available from 7 am till 9 pm. My village has a
-    poor Internet connection, sorry for that. There are occasional
-    disconnections, but most of the time audio quality is good enough to
-    practice.
+    am in GMT+7. These days I am busy with work so I can practice mostly
+    at evenings or on weekends.
 
 -   **Chatting doesn't work for me**. Chatting makes me constantly
     switching from one activity to another. This makes me less focused
@@ -39,7 +37,7 @@ about the practice.
 
 ## What we should practice
 
-My belief is that we should concentrate on having a positive experience.
+My belief is that we should concentrate on having positive experience.
 Practice should be easy, so that you want to practice again and again.
 
 First of all, we need to **eliminate difficulties**:
@@ -115,7 +113,7 @@ proficiency:
 
 ## Which languages we can practice
 
-I learn Mandarin and Japanese. I can speak English and Russian.
+I learn Thai and Mandarin. I can speak English and Russian.
 
 ### English
 
@@ -156,10 +154,11 @@ several language exchange partners who practice English with me.
 
 ## What software to use
 
-Any video conference app will work. I personally prefer zoom, but we can
-use meet.jit.si, weechat or even Tandem app. The reason why I prefer
-zoom is that it seems to work better with my poor Internet connection
-and I can use it from my PC.
+Any video conference app would work. I prefer Google Meet, but we can
+use meet.jit.si, weechat, or even Tandem app. The reason why I prefer 
+Google Meet is because I can connect from my PC and from my phone in the same
+time. PC allows me to record meetings. Using the phone allows me to capture a
+sketchbook while I am drawing.
 
 ## Frequently asked questions
 
@@ -170,7 +169,7 @@ to hear your own speech. But the difficulty with chatting is that it requires me
 to switch from one activity to another. This is time-consuming and it makes me
 more distracted. I prefer doing 1 activity at a time.
 
-Q. We don't know each other, I am shy to do audio/video calls. 
+Q. We don't know each other, I am shy to do audio/video calls.
 
 A. Chances are, we will never meet in real life. We are practicing over the
 Internet; I am not a part of your everyday Environment. The practical chance of
